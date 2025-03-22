@@ -4,6 +4,9 @@ CREATE DATABASE IF NOT EXISTS bookstore;
 
 USE bookstore;
 
+-- ====================================================
+-- TABLES
+-- ====================================================
 -- Customer table
 CREATE TABLE Customer (
     CustomerID INT AUTO_INCREMENT PRIMARY KEY,
@@ -15,6 +18,7 @@ CREATE TABLE Customer (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
 -- Book table
 CREATE TABLE Book (
     BookID INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,6 +37,7 @@ CREATE TABLE Book (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
 -- Cart table
 CREATE TABLE Cart (
     CartID INT AUTO_INCREMENT PRIMARY KEY,
@@ -41,6 +46,7 @@ CREATE TABLE Cart (
     UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (CustomerID) REFERENCES Customer (CustomerID) ON DELETE CASCADE
 );
+
 -- CartItems table
 CREATE TABLE CartItems (
     CartItemID INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,6 +57,7 @@ CREATE TABLE CartItems (
     FOREIGN KEY (CartID) REFERENCES Cart (CartID) ON DELETE CASCADE,
     FOREIGN KEY (BookID) REFERENCES Book (BookID) ON DELETE CASCADE
 );
+
 -- Order table
 CREATE TABLE CustomerOrder (
     OrderID INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,6 +79,7 @@ CREATE TABLE CustomerOrder (
     UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (CustomerID) REFERENCES Customer (CustomerID) ON DELETE SET NULL
 );
+
 -- OrderItems table
 CREATE TABLE OrderItems (
     OrderItemID INT AUTO_INCREMENT PRIMARY KEY,
@@ -129,15 +137,18 @@ CREATE TRIGGER after_order_placed
 AFTER INSERT ON OrderItems
 FOR EACH ROW
 BEGIN
-    -- Decrease available stock
-    UPDATE Book
-    SET Stock = Stock - NEW.Quantity
-    WHERE BookID = NEW.BookID AND Stock >= NEW.Quantity;
-    
-    -- Update status if stock becomes 0
-    UPDATE Book
-    SET BookStatus = 'out_of_stock'
-    WHERE Stock = 0 AND BookStatus = 'available';
+    DECLARE stock_available INT;
+    SELECT Stock INTO stock_available FROM Book WHERE BookID = NEW.BookID;
+    IF stock_available < NEW.Quantity THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Insufficient stock for book';
+    ELSE
+        UPDATE Book
+        SET Stock = Stock - NEW.Quantity
+        WHERE BookID = NEW.BookID;
+        UPDATE Book
+        SET BookStatus = 'out_of_stock'
+        WHERE Stock = 0 AND BookStatus = 'available';
+    END IF;
 END $$
 
 -- Restore book stock if an order is canceled
@@ -157,20 +168,6 @@ BEGIN
         SET BookStatus = 'available'
         WHERE Stock > 0 AND BookStatus = 'out_of_stock';
     END IF;
-END $$
-
--- Automatically calculate order total when items change
-CREATE TRIGGER calculate_order_total
-AFTER INSERT ON OrderItems
-FOR EACH ROW
-BEGIN
-    UPDATE CustomerOrder
-    SET Total = (
-        SELECT SUM(Quantity * PriceAtPurchase)
-        FROM OrderItems
-        WHERE OrderID = NEW.OrderID
-    )
-    WHERE OrderID = NEW.OrderID;
 END $$
 
 -- Place order
@@ -229,78 +226,7 @@ BEGIN
     END IF;
 END $$
 
--- Add to cart
-CREATE PROCEDURE AddToCart(
-    IN p_CustomerID INT,
-    IN p_BookID INT,
-    IN p_Quantity INT
-)
-BEGIN
-    DECLARE v_CartID INT;
-    DECLARE v_ExistingItem INT DEFAULT 0;
-    
-    -- Get customer's cart
-    SELECT CartID INTO v_CartID 
-    FROM Cart 
-    WHERE CustomerID = p_CustomerID 
-    LIMIT 1;
-    
-    -- Create cart if doesn't exist
-    IF v_CartID IS NULL THEN
-        INSERT INTO Cart (CustomerID) VALUES (p_CustomerID);
-        SET v_CartID = LAST_INSERT_ID();
-    END IF;
-    
-    -- Check if book already in cart
-    SELECT COUNT(*) INTO v_ExistingItem
-    FROM CartItems
-    WHERE CartID = v_CartID AND BookID = p_BookID;
-    
-    IF v_ExistingItem > 0 THEN
-        -- Update existing item quantity
-        UPDATE CartItems
-        SET Quantity = Quantity + p_Quantity
-        WHERE CartID = v_CartID AND BookID = p_BookID;
-    ELSE
-        -- Add new item to cart
-        INSERT INTO CartItems (CartID, BookID, Quantity)
-        VALUES (v_CartID, p_BookID, p_Quantity);
-    END IF;
-END $$
-
--- Search books (with filtering)
-CREATE PROCEDURE SearchBooks(
-    IN p_Title VARCHAR(255),
-    IN p_Author VARCHAR(100),
-    IN p_Genre VARCHAR(50),
-    IN p_InStock BOOLEAN
-) 
-BEGIN
-    SELECT *
-    FROM Book
-    WHERE (
-            p_Title IS NULL
-            OR Title LIKE CONCAT('%', p_Title, '%')
-        )
-        AND (
-            p_Author IS NULL
-            OR Author LIKE CONCAT('%', p_Author, '%')
-        )
-        AND (
-            p_Genre IS NULL
-            OR Genre = p_Genre
-        )
-        AND (
-            p_InStock IS NULL
-            OR (
-                p_InStock = TRUE
-                AND Stock > 0
-                AND BookStatus = 'available'
-            )
-            OR (p_InStock = FALSE)
-        )
-    ORDER BY Title;
-END $$
+DELIMITER;
 
 -- ====================================================
 -- MOCK DATA
