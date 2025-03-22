@@ -1,6 +1,7 @@
 package bookstore.demo.book;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     // Find books by status
     List<Book> findByBookStatus(Book.BookStatus status);
+
+    boolean existsByTitleAndAuthorIgnoreCase(String title, String author);
+
+    Optional<Book> findByTitleAndAuthorIgnoreCase(String title, String author);
 }

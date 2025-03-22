@@ -45,6 +45,12 @@ public class BookController {
     @PostMapping
     public ResponseEntity<?> createBook(@RequestBody Book book) {
         try {
+            if (bookService.isDuplicateBook(book)) {
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(Map.of("error", "This book already exists in the database",
+                                "suggestion", "Consider updating the stock instead"));
+            }
             Book savedBook = bookService.saveBook(book);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
         } catch (IllegalArgumentException e) {

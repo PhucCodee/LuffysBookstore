@@ -24,6 +24,14 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
+    public Optional<Book> getBookByTitleAndAuthor(String title, String author) {
+        return bookRepository.findByTitleAndAuthorIgnoreCase(title, author);
+    }
+
+    public boolean isDuplicateBook(Book book) {
+        return bookRepository.existsByTitleAndAuthorIgnoreCase(book.getTitle(), book.getAuthor());
+    }
+
     // Save a new book
     public Book saveBook(Book book) {
         // Basic validation

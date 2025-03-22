@@ -2,6 +2,8 @@ package bookstore.demo.customer;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,6 +27,7 @@ public class Customer {
     @Column(name = "Username", unique = true, nullable = false, length = 50)
     private String username;
 
+    @JsonIgnore
     @Column(name = "UserPassword", nullable = false, length = 255)
     private String userPassword;
 
