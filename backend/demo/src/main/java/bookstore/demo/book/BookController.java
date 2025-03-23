@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/books")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookController {
 
     private final BookService bookService;
@@ -151,4 +153,17 @@ public class BookController {
         List<Book> books = bookService.getBooksByStatus(Book.BookStatus.available);
         return ResponseEntity.ok(books);
     }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<Book>> getUpcomingBooks() {
+        List<Book> books = bookService.getBooksByStatus(Book.BookStatus.upcoming);
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/out_of_stock")
+    public ResponseEntity<List<Book>> getOutOfStockBooks() {
+        List<Book> books = bookService.getBooksByStatus(Book.BookStatus.out_of_stock);
+        return ResponseEntity.ok(books);
+    }
+
 }
