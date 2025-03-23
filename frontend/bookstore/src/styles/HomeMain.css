@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "Optima";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Optima"), url("../../public/fonts/OPTIMA.woff") format("woff");
+}
+
 .home-main {
     max-width: 1200px;
     margin: 0 auto;
@@ -21,6 +28,7 @@
     font-size: 32px;
     font-weight: 600;
     letter-spacing: 0.5px;
+    font-family: "Optima";
 }
 
 .featured-banner p {
@@ -47,7 +55,6 @@
     border-bottom: 2px solid #eaeaea;
     color: #333;
 }
-
 
 .books-container-wrapper {
     position: relative;

@@ -39,12 +39,11 @@ const BookRow = ({ title, books, isLoading, error, hideStatus }) => {
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
 
-    // Function to scroll the container left or right
     const scroll = (direction) => {
         if (scrollContainerRef.current) {
             const container = scrollContainerRef.current;
             const scrollAmount =
-                container.querySelector(".book-card")?.offsetWidth + 20 || 200;
+                container.querySelector(".book-card")?.offsetWidth + 420 || 200;
 
             if (direction === "left") {
                 container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
@@ -54,17 +53,14 @@ const BookRow = ({ title, books, isLoading, error, hideStatus }) => {
         }
     };
 
-    // Check scroll position to determine if arrows should be shown
     const checkScrollPosition = () => {
         if (scrollContainerRef.current) {
             const container = scrollContainerRef.current;
 
-            // Show left arrow if we've scrolled to the right
             setShowLeftArrow(container.scrollLeft > 0);
 
-            // Show right arrow if we can scroll more to the right
             setShowRightArrow(
-                container.scrollLeft < container.scrollWidth - container.clientWidth - 5 // 5px tolerance
+                container.scrollLeft < container.scrollWidth - container.clientWidth - 5
             );
         }
     };
@@ -264,7 +260,7 @@ const HomeMain = () => {
             </div>
 
             <div className="book-rows">
-                {/* Display Upcoming Books row - hide "Coming Soon" badge because it's redundant */}
+                { }
                 <BookRow
                     title="Coming Soon"
                     books={upcomingBooks}
@@ -273,7 +269,7 @@ const HomeMain = () => {
                     hideStatus="upcoming"
                 />
 
-                {/* Display available and out-of-stock books by genre */}
+                { }
                 {!isLoadingBooks && !booksError ? (
                     availableGenres.map((genre) => (
                         <BookRow
