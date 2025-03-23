@@ -65,9 +65,9 @@ const HomeMain = () => {
 
     // State for available books by genre
     const [availableGenres, setAvailableGenres] = useState([]);
-    const [availableBooksByGenre, setAvailableBooksByGenre] = useState({});
-    const [isLoadingAvailable, setIsLoadingAvailable] = useState(true);
-    const [availableError, setAvailableError] = useState(null);
+    const [booksByGenre, setBooksByGenre] = useState({});
+    const [isLoadingBooks, setIsLoadingBooks] = useState(true);
+    const [booksError, setBooksError] = useState(null);
 
     // Fetch upcoming books
     useEffect(() => {
@@ -92,64 +92,59 @@ const HomeMain = () => {
         fetchUpcomingBooks();
     }, []);
 
-    // Fetch available books
+    // Fetch both available and out of stock books
     useEffect(() => {
-        const fetchAvailableBooks = async () => {
+        const fetchAllBooks = async () => {
             try {
-                const response = await fetch('/api/books/available');
+                setIsLoadingBooks(true);
 
-                if (!response.ok) {
+                // Fetch both available and out-of-stock books
+                const [availableResponse, outOfStockResponse] = await Promise.all([
+                    fetch('/api/books/available'),
+                    fetch('/api/books/out_of_stock')
+                ]);
+
+                if (!availableResponse.ok) {
                     throw new Error('Failed to fetch available books');
                 }
 
-                const books = await response.json();
+                if (!outOfStockResponse.ok) {
+                    throw new Error('Failed to fetch out-of-stock books');
+                }
 
-                // Extract unique genres from available books
-                const genres = [...new Set(books.map(book => book.genre))];
+                // Get data from both responses
+                const availableBooks = await availableResponse.json();
+                const outOfStockBooks = await outOfStockResponse.json();
+
+                // Combine both sets of books
+                const allBooks = [...availableBooks, ...outOfStockBooks];
+
+                // Extract unique genres from all books
+                const genres = [...new Set(allBooks.map(book => book.genre))];
                 setAvailableGenres(genres);
 
-                // Group available books by genre
-                const booksByGenre = {};
+                // Group books by genre
+                const booksByGenreMap = {};
                 genres.forEach(genre => {
-                    booksByGenre[genre] = books.filter(book => book.genre === genre);
+                    // Filter books of this genre from both available and out of stock
+                    booksByGenreMap[genre] = allBooks.filter(book =>
+                        book.genre === genre &&
+                        (book.bookStatus === "available" || book.bookStatus === "out_of_stock")
+                    );
                 });
-                setAvailableBooksByGenre(booksByGenre);
+
+                setBooksByGenre(booksByGenreMap);
 
             } catch (err) {
-                console.error("Error fetching available books:", err);
-                setAvailableError(err.message);
+                console.error("Error fetching books:", err);
+                setBooksError(err.message);
             } finally {
-                setIsLoadingAvailable(false);
+                setIsLoadingBooks(false);
             }
         };
 
-        fetchAvailableBooks();
+        fetchAllBooks();
     }, []);
-
-    // Function to fetch books by genre as a fallback method
-    const fetchBooksByGenre = async (genre) => {
-        try {
-            const encodedGenre = encodeURIComponent(genre);
-            const response = await fetch(`/api/books/genre/${encodedGenre}`);
-
-            if (!response.ok) {
-                throw new Error(`Failed to fetch ${genre} books`);
-            }
-
-            const books = await response.json();
-            // Filter to only include available books
-            const availableBooks = books.filter(book => book.bookStatus === "available");
-
-            // Update state for this specific genre
-            setAvailableBooksByGenre(prev => ({
-                ...prev,
-                [genre]: availableBooks
-            }));
-
-        } catch (err) {
-            console.error(`Error fetching ${genre} books:`, err);
-        }
-    };
 
     return (
         <main className="home-main">
@@ -168,26 +163,26 @@ const HomeMain = () => {
                     hideStatus="upcoming"
                 />
 
-                {/* Display available books by genre */}
-                {!isLoadingAvailable && !availableError ? (
+                {/* Display available and out-of-stock books by genre */}
+                {!isLoadingBooks && !booksError ? (
                     availableGenres.map((genre) => (
                         <BookRow
                             key={genre}
                             title={`${genre}`}
-                            books={availableBooksByGenre[genre] || []}
+                            books={booksByGenre[genre] || []}
                             isLoading={false}
                             error={null}
                         />
                     ))
-                ) : isLoadingAvailable ? (
+                ) : isLoadingBooks ? (
                     <div className="loading-container main-loading">
                         <div className="loading-spinner"></div>
                         <p>Loading book categories...</p>
                     </div>
                 ) : (
                     <div className="error-message main-error">
-                        <p>Failed to load available books. Please try again later.</p>
-                        <small>{availableError}</small>
+                        <p>Failed to load books. Please try again later.</p>
+                        <small>{booksError}</small>
                     </div>
                 )}
             </div>
