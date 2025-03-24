@@ -1,0 +1,104 @@
+.book-row {
+    margin-bottom: 20px;
+}
+
+.row-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #eaeaea;
+    color: #333;
+}
+
+.books-container-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.books-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    width: 100%;
+    padding: 5px 0;
+}
+
+.books-container::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-arrow {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+
+.nav-arrow:hover {
+    background: #f8f8f8;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.nav-arrow svg {
+    width: 24px;
+    height: 24px;
+    color: #555;
+}
+
+.nav-arrow:hover svg {
+    color: #333;
+}
+
+.left-arrow {
+    left: -20px;
+}
+
+.right-arrow {
+    right: -20px;
+}
+
+.row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .row-title {
+        font-size: 20px;
+    }
+
+    .nav-arrow {
+        width: 32px;
+        height: 32px;
+    }
+
+    .nav-arrow svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .left-arrow {
+        left: -16px;
+    }
+
+    .right-arrow {
+        right: -16px;
+    }
+}
