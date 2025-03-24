@@ -1,24 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
 import HomePage from './pages/HomePage';
 import './App.css';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/profile" element={<Profile />} />
-          {/* Add more routes as needed */}
-        </Routes>
-      </div>
-    </Router>
+    <CartProvider>
+
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/profile" element={<Profile />} />
+            {/* Add more routes as needed */}
+          </Routes>
+        </div>
+      </Router>
+    </CartProvider>
   );
 }
 
-// Placeholder components - replace these with actual components when you build them
 const Cart = () => (
   <div className="page-container">
     <h1>Shopping Cart Page</h1>

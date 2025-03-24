@@ -101,6 +101,34 @@
     height: 24px;
 }
 
+.cart-icon-container {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #e63946;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* For larger numbers */
+.cart-count:global(.large) {
+    width: auto;
+    min-width: 20px;
+    padding: 0 5px;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 900px) {
     .navbar-logo {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import "../styles/BookDetailsModal.css";
 
-// Helper function moved outside component
 const formatStatus = (status) => {
     switch (status) {
         case "available":
@@ -19,6 +19,7 @@ const formatStatus = (status) => {
 const BookDetailsModal = ({ book, onClose }) => {
     const [quantity, setQuantity] = useState(1);
     const [showSuccess, setShowSuccess] = useState(false);
+    const { addToCart, loading } = useCart();
 
     if (!book) return null;
 
@@ -37,8 +38,14 @@ const BookDetailsModal = ({ book, onClose }) => {
         }
     };
 
-    const handleAddToCart = () => {
-        alert(`Added ${quantity} of "${book.title}" to cart`);
+    const handleAddToCart = async () => {
+        const success = await addToCart(book, quantity);
+        if (success) {
+            setShowSuccess(true);
+            setTimeout(() => {
+                setShowSuccess(false);
+            }, 2000);
+        }
     };
 
     return (
@@ -90,7 +97,7 @@ const BookDetailsModal = ({ book, onClose }) => {
                                 <button
                                     className="quantity-btn minus"
                                     onClick={decreaseQuantity}
-                                    disabled={quantity <= 1 || !isAvailable}
+                                    disabled={quantity <= 1 || !isAvailable || loading}
                                     aria-label="Decrease quantity"
                                 >
                                     −
@@ -99,7 +106,7 @@ const BookDetailsModal = ({ book, onClose }) => {
                                 <button
                                     className="quantity-btn plus"
                                     onClick={increaseQuantity}
-                                    disabled={!isAvailable || quantity >= maxStock}
+                                    disabled={!isAvailable || quantity >= maxStock || loading}
                                     aria-label="Increase quantity"
                                 >
                                     +
@@ -109,15 +116,15 @@ const BookDetailsModal = ({ book, onClose }) => {
                             <button
                                 className="add-to-cart-btn"
                                 onClick={handleAddToCart}
-                                disabled={!isAvailable}
+                                disabled={!isAvailable || loading}
                             >
-                                {isAvailable ? "Add to Cart" : "Not Available"}
+                                {loading ? "Adding..." : isAvailable ? "Add to Cart" : "Not Available"}
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Optional success message overlay */}
+                {/* Success message overlay */}
                 {showSuccess && <div className="success-message">Added to cart!</div>}
             </div>
         </div>

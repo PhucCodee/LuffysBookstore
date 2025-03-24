@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import logo from "../assets/logo.png";
 import cartIcon from "../assets/cart.png";
 import profileIcon from "../assets/user.png";
@@ -8,6 +9,7 @@ import "../styles/NavBar.css";
 
 const NavBar = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const { cartCount } = useCart();
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -51,8 +53,9 @@ const NavBar = () => {
                 </div>
 
                 <div className="navbar-actions">
-                    <Link to="/cart" className="navbar-icon-link">
+                    <Link to="/cart" className="navbar-icon-link cart-icon-container">
                         <img src={cartIcon} alt="Shopping Cart" className="navbar-icon" />
+                        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
                     </Link>
                     <Link to="/profile" className="navbar-icon-link">
                         <img src={profileIcon} alt="User Profile" className="navbar-icon" />
