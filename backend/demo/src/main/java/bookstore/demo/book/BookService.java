@@ -1,8 +1,14 @@
 package bookstore.demo.book;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -127,5 +133,72 @@ public class BookService {
     // Get books by status
     public List<Book> getBooksByStatus(Book.BookStatus status) {
         return bookRepository.findByBookStatus(status);
+    }
+
+    public Map<String, Object> searchBooks(
+            String query, int page, int size, String sortField,
+            String direction, String bookStatus, String genre) {
+
+        try {
+            // Create pageable object for pagination and sorting
+            Sort.Direction sortDirection = direction.equalsIgnoreCase("desc")
+                    ? Sort.Direction.DESC : Sort.Direction.ASC;
+            Sort sort = Sort.by(sortDirection, sortField);
+            PageRequest pageable = PageRequest.of(page, size, sort);
+
+            // Build dynamic query using Specification
+            Specification<Book> spec = Specification.where(null);
+
+            // Add title/author/description search if query is provided
+            if (query != null && !query.trim().isEmpty()) {
+                String searchTerm = "%" + query.toLowerCase() + "%";
+                spec = spec.and((root, criteriaQuery, criteriaBuilder)
+                        -> criteriaBuilder.or(
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), searchTerm),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("author")), searchTerm),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("bookDescription")), searchTerm)
+                        )
+                );
+            }
+
+            // Add status filter if provided
+            if (bookStatus != null && !bookStatus.isEmpty() && !bookStatus.equalsIgnoreCase("all")) {
+                Book.BookStatus status;
+                try {
+                    status = Book.BookStatus.valueOf(bookStatus);
+                    spec = spec.and((root, criteriaQuery, criteriaBuilder)
+                            -> criteriaBuilder.equal(root.get("bookStatus"), status)
+                    );
+                } catch (IllegalArgumentException e) {
+                    // Ignore invalid status
+                }
+            }
+
+            // Add genre filter if provided
+            if (genre != null && !genre.isEmpty() && !genre.equalsIgnoreCase("all")) {
+                spec = spec.and((root, criteriaQuery, criteriaBuilder)
+                        -> criteriaBuilder.equal(root.get("genre"), genre)
+                );
+            }
+
+            // Execute the query
+            Page<Book> booksPage = bookRepository.findAll(spec, pageable);
+
+            // Prepare the result
+            Map<String, Object> result = new HashMap<>();
+            result.put("content", booksPage.getContent());
+            result.put("currentPage", booksPage.getNumber());
+            result.put("totalItems", booksPage.getTotalElements());
+            result.put("totalPages", booksPage.getTotalPages());
+
+            return result;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error searching books: " + e.getMessage(), e);
+        }
+    }
+
+    public List<String> getAllGenres() {
+        return bookRepository.findDistinctGenres();
     }
 }

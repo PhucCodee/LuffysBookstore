@@ -91,11 +91,35 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    // Search books by title
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
-        List<Book> books = bookService.searchBooksByTitle(query);
-        return ResponseEntity.ok(books);
+    public ResponseEntity<Map<String, Object>> searchBooks(
+            @RequestParam(required = false) String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "title") String sort,
+            @RequestParam(required = false) String bookStatus,
+            @RequestParam(required = false) String genre) {
+
+        try {
+            String[] sortParams = sort.split(",");
+            String sortField = sortParams[0];
+            String direction = sortParams.length > 1 ? sortParams[1] : "asc";
+
+            Map<String, Object> response = bookService.searchBooks(
+                    query, page, size, sortField, direction, bookStatus, genre);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error performing search: " + e.getMessage()));
+        }
+    }
+
+    // Add endpoint to get all available genres
+    @GetMapping("/genres")
+    public ResponseEntity<List<String>> getAllGenres() {
+        List<String> genres = bookService.getAllGenres();
+        return ResponseEntity.ok(genres);
     }
 
     // Get books by genre
