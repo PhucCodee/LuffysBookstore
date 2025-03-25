@@ -2,16 +2,17 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import HomePage from './pages/HomePage';
+import BookSearchPage from './pages/BookSearchPage';
 import './App.css';
 
 function App() {
   return (
     <CartProvider>
-
       <Router>
         <div className="App">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/search" element={<BookSearchPage />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<Profile />} />
             {/* Add more routes as needed */}

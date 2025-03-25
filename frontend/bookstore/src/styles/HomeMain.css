@@ -3,12 +3,14 @@
     font-style: normal;
     font-weight: normal;
     src: local("Optima"), url("../../public/fonts/OPTIMA.woff") format("woff");
+    font-display: swap;
 }
 
 .home-main {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    min-height: 50vh;
+    animation: fadeIn 0.5s ease-in;
 }
 
 .featured-banner {
@@ -17,9 +19,12 @@
     padding: 40px 20px;
     border-radius: 8px;
     margin-bottom: 30px;
+    margin-top: 20px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     border: 1px solid #e8e4e0;
+    position: relative;
+    overflow: hidden;
 }
 
 .featured-banner h1 {
@@ -29,6 +34,7 @@
     font-weight: 600;
     letter-spacing: 0.5px;
     font-family: "Optima", serif;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
 .featured-banner p {
@@ -41,10 +47,22 @@
 .book-rows {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
+    margin-bottom: 40px;
 }
 
-/* Responsive adjustments */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 768px) {
     .featured-banner {
         padding: 30px 15px;
@@ -57,6 +75,10 @@
     .featured-banner p {
         font-size: 16px;
     }
+
+    .book-rows {
+        gap: 25px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -66,9 +88,35 @@
 
     .featured-banner {
         padding: 20px 10px;
+        margin-bottom: 20px;
     }
 
     .featured-banner h1 {
         font-size: 24px;
+    }
+
+    .book-rows {
+        gap: 20px;
+    }
+}
+
+@media print {
+    .featured-banner {
+        background: none !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .featured-banner h1,
+    .featured-banner p {
+        color: black !important;
+        text-shadow: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-main {
+        animation: none;
     }
 }
