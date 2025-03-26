@@ -1,15 +1,8 @@
 .search-main {
     min-height: 60vh;
-}
-
-.search-main .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-}
-
-.search-main .pagination-container {
-    transition: opacity 0.3s ease;
 }
 
 @media (max-width: 768px) {

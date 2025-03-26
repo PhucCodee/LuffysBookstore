@@ -11,7 +11,6 @@ const NavBar = ({ onSearch }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const { cartCount } = useCart();
     const navigate = useNavigate();
-    const location = useLocation();
     const searchInputRef = useRef(null);
 
     const handleSearchChange = (e) => {

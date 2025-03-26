@@ -1,12 +1,12 @@
-import React from 'react';
-import '../styles/Pagination.css'
+import React from "react";
+import "../styles/Pagination.css";
 
 const Pagination = ({
     currentPage,
     totalPages,
     onPageChange,
     siblingCount = 1,
-    className = ""
+    className = "",
 }) => {
     if (totalPages <= 1) {
         return null;
@@ -22,7 +22,7 @@ const Pagination = ({
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages && page !== currentPage) {
             onPageChange(page);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
 
@@ -49,18 +49,18 @@ const Pagination = ({
         if (!shouldShowLeftDots && shouldShowRightDots) {
             const leftItemCount = 3 + 2 * siblingCount;
             const leftRange = range(1, leftItemCount);
-            return [...leftRange, 'RIGHT_DOTS', totalPages];
+            return [...leftRange, "RIGHT_DOTS", totalPages];
         }
 
         if (shouldShowLeftDots && !shouldShowRightDots) {
             const rightItemCount = 3 + 2 * siblingCount;
             const rightRange = range(totalPages - rightItemCount + 1, totalPages);
-            return [1, 'LEFT_DOTS', ...rightRange];
+            return [1, "LEFT_DOTS", ...rightRange];
         }
 
         if (shouldShowLeftDots && shouldShowRightDots) {
             const middleRange = range(leftSiblingIndex, rightSiblingIndex);
-            return [1, 'LEFT_DOTS', ...middleRange, 'RIGHT_DOTS', totalPages];
+            return [1, "LEFT_DOTS", ...middleRange, "RIGHT_DOTS", totalPages];
         }
     };
 
@@ -80,26 +80,25 @@ const Pagination = ({
                     disabled={currentPage === 1}
                     aria-label="Go to previous page"
                 >
-                    &laquo; Previous
+                    Previous
                 </button>
 
                 {/* Page Numbers */}
                 <div className="page-numbers" role="list">
                     {paginationRange.map((pageNumber, index) => {
-                        // Render dots
-                        if (pageNumber === 'LEFT_DOTS' || pageNumber === 'RIGHT_DOTS') {
+                        if (pageNumber === "LEFT_DOTS" || pageNumber === "RIGHT_DOTS") {
                             return <Dots key={`dots-${index}`} />;
                         }
 
-                        // Render page button
                         return (
                             <button
                                 key={pageNumber}
                                 type="button"
-                                className={`pagination-btn page-num ${currentPage === pageNumber ? 'active' : ''}`}
+                                className={`pagination-btn page-num ${currentPage === pageNumber ? "active" : ""
+                                    }`}
                                 onClick={() => handlePageChange(pageNumber)}
                                 aria-label={`Page ${pageNumber}`}
-                                aria-current={currentPage === pageNumber ? 'page' : undefined}
+                                aria-current={currentPage === pageNumber ? "page" : undefined}
                             >
                                 {pageNumber}
                             </button>
@@ -115,7 +114,7 @@ const Pagination = ({
                     disabled={currentPage === totalPages}
                     aria-label="Go to next page"
                 >
-                    Next &raquo;
+                    Next
                 </button>
             </div>
 

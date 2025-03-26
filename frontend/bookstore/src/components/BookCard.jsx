@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import formatPrice from '../utils/formatPrice';
 import '../styles/BookCard.css'
-
-const formatPrice = (price) => {
-    return typeof price === 'number'
-        ? `$${price.toFixed(2)}`
-        : `$${parseFloat(price || 0).toFixed(2)}`;
-};
 
 const BookBadge = ({ status }) => {
     if (!status || status === 'available') return null;
@@ -23,7 +18,6 @@ const BookCard = ({ book, hideStatus, onBookClick }) => {
     };
 
     const handleKeyDown = (e) => {
-        // Allow activation with Enter or Space key
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             handleCardClick();

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BookCard from './BookCard';
 import BookDetailsModal from './BookDetailsModal';
+import useBookPresentation from '../hooks/useBookPresentation'
 import '../styles/SearchResults.css';
 
 const SearchHeader = ({ loading, error, books, searchQuery, totalCount, showCount = false }) => (
@@ -10,8 +11,11 @@ const SearchHeader = ({ loading, error, books, searchQuery, totalCount, showCoun
             {loading ? 'Searching...' :
                 error ? `Error: ${error}` :
                     books.length === 0 ? 'No results found' :
-                        showCount ? `Found ${totalCount || books.length} results for "${searchQuery}"` :
-                            `for "${searchQuery}"`}
+                        showCount
+                            ? totalCount
+                                ? `Found ${totalCount} results for "${searchQuery}"`
+                                : `Found ${books.length} results for "${searchQuery}"`
+                            : `for "${searchQuery}"`}
         </p>
     </div>
 );
@@ -46,55 +50,79 @@ const EmptyState = ({ searchQuery }) => (
     </div>
 );
 
-const BookGrid = ({ books, onBookClick }) => (
-    <div
-        className="search-results-grid"
-        role="list"
-        aria-label="Search results"
-    >
-        {books.map(book => (
-            <div role="listitem" key={book.bookId} className="book-grid-item">
-                <BookCard
-                    book={book}
-                    onBookClick={onBookClick}
-                />
+const BookGrid = ({ books, onBookClick, totalCount }) => {
+    const hasMoreResults = totalCount > books.length;
+
+    return (
+        <>
+            <div
+                className="search-results-grid"
+                role="list"
+                aria-label="Search results"
+            >
+                {books.map(book => (
+                    <div role="listitem" key={book.bookId} className="book-grid-item">
+                        <BookCard
+                            book={book}
+                            onBookClick={onBookClick}
+                        />
+                    </div>
+                ))}
             </div>
-        ))}
-    </div>
-);
+
+            {hasMoreResults && (
+                <div className="search-results-info">
+                    <p>
+                        Showing {books.length} of {totalCount} results
+                    </p>
+                    {/* Pagination controls would go here if implemented */}
+                </div>
+            )}
+        </>
+    );
+};
 
 const SearchResults = ({ books, loading, error, searchQuery, totalCount }) => {
-    const [selectedBook, setSelectedBook] = useState(null);
-
-    const handleBookClick = (book) => {
-        setSelectedBook(book);
-    };
-
-    const handleCloseModal = () => {
-        setSelectedBook(null);
-    };
+    const {
+        content,
+        headerInfo,
+        selectedBook,
+        isModalOpen,
+        handleBookClick,
+        handleCloseModal
+    } = useBookPresentation("search", { books, loading, error, searchQuery, totalCount });
 
     const renderContent = () => {
-        if (loading) return <LoadingState />;
-        if (error) return <ErrorState error={error} />;
-        if (books.length === 0) return <EmptyState searchQuery={searchQuery} />;
-        return <BookGrid books={books} onBookClick={handleBookClick} />;
+        switch (content.type) {
+            case 'loading':
+                return <LoadingState />;
+            case 'error':
+                return <ErrorState error={content.error} />;
+            case 'empty':
+                return <EmptyState searchQuery={content.searchQuery} />;
+            case 'results':
+                return (
+                    <BookGrid
+                        books={content.books}
+                        onBookClick={handleBookClick}
+                        totalCount={content.totalCount}
+                    />
+                );
+            default:
+                return null;
+        }
     };
 
     return (
         <section className="search-results-container" aria-label="Search results">
             <SearchHeader
-                loading={loading}
-                error={error}
-                books={books}
-                searchQuery={searchQuery}
-                totalCount={totalCount}
+                {...headerInfo}
                 showCount={true}
             />
 
             {renderContent()}
 
-            {selectedBook && (
+            {isModalOpen && (
                 <BookDetailsModal
                     book={selectedBook}
                     onClose={handleCloseModal}

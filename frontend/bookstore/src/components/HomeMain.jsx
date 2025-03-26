@@ -1,31 +1,43 @@
-import React, { useMemo } from 'react';
-import BookRow from './BookRow';
-import BookDetailsModal from './BookDetailsModal';
-import { LoadingSpinner, ErrorMessage } from './LoadingStates';
-import useUpcomingBooks from '../hooks/useUpcomingBooks';
-import useBooksByGenre from '../hooks/useBooksByGenre';
-import useModal from '../hooks/useModal';
-import '../styles/HomeMain.css';
+import React from "react";
+import BookRow from "./BookRow";
+import useBookPresentation from "../hooks/useBookPresentation";
+import useContentRenderer from "../hooks/useContentRenderer";
+import BookDetailsModal from "./BookDetailsModal";
+import "../styles/HomeMain.css";
 
 const HomeMain = () => {
-    const { upcomingBooks, isLoading: isLoadingUpcoming, error: upcomingError } = useUpcomingBooks();
-    const { availableGenres, booksByGenre, isLoading: isLoadingBooks, error: booksError } = useBooksByGenre();
-    const { selectedItem: selectedBook, openModal: handleBookClick, closeModal } = useModal();
+    const {
+        upcomingBooks,
+        isLoadingUpcoming,
+        upcomingError,
+        genreRows,
+        isLoadingBooks,
+        booksError,
+        selectedBook,
+        handleBookClick,
+        closeModal,
+        modalRef,
+    } = useBookPresentation("collection");
 
-    const genreRows = useMemo(() => {
-        if (isLoadingBooks || booksError) return null;
+    const { renderContent } = useContentRenderer();
 
-        return availableGenres.map((genre) => (
+    // Render the genre rows
+    const renderedGenreRows = renderContent({
+        isLoading: isLoadingBooks,
+        error: booksError,
+        content: genreRows?.map((row) => (
             <BookRow
-                key={genre}
-                title={genre}
-                books={booksByGenre[genre] || []}
-                isLoading={false}
-                error={null}
+                key={row.key}
+                title={row.title}
+                books={row.books}
+                isLoading={row.isLoading}
+                error={row.error}
                 onBookClick={handleBookClick}
             />
-        ));
-    }, [availableGenres, booksByGenre, isLoadingBooks, booksError, handleBookClick]);
+        )),
+        loadingMessage: "Loading book categories...",
+        errorMessage: "Failed to load books. Please try again later.",
+    });
 
     return (
         <main className="home-main">
@@ -42,27 +54,22 @@ const HomeMain = () => {
                         books={upcomingBooks}
                         isLoading={isLoadingUpcoming}
                         error={upcomingError}
-                        hideStatus="upcoming"
+                        hideStatus={true}
                         onBookClick={handleBookClick}
                     />
                 </section>
 
                 {/* Genre-based book sections */}
-                {!isLoadingBooks && !booksError ? (
-                    genreRows
-                ) : isLoadingBooks ? (
-                    <LoadingSpinner message="Loading book categories..." />
-                ) : (
-                    <ErrorMessage
-                        message="Failed to load books. Please try again later."
-                        details={booksError}
-                    />
-                )}
+                {renderedGenreRows}
             </div>
 
-            {/* Book details modal - only rendered when a book is selected */}
+            {/* Book details modal */}
             {selectedBook && (
-                <BookDetailsModal book={selectedBook} onClose={closeModal} />
+                <BookDetailsModal
+                    book={selectedBook}
+                    onClose={closeModal}
+                    modalRef={modalRef}
+                />
             )}
         </main>
     );

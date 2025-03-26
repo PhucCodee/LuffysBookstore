@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
-import HomePage from './pages/HomePage';
-import BookSearchPage from './pages/BookSearchPage';
+import Home from './pages/Home';
+import BookSearch from './pages/BookSearch';
 import './App.css';
 
 function App() {
@@ -11,8 +11,8 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/search" element={<BookSearchPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<BookSearch />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<Profile />} />
             {/* Add more routes as needed */}

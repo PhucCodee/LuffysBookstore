@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useRef } from "react";
 import { useCart } from "../context/CartContext";
+import useModalAccessibility from "../hooks/useAccessibleModal";
+import useQuantityControl from "../hooks/useQuantityControl";
+import useSuccessMessage from "../hooks/useSuccessMessage";
+import formatStatus from "../utils/formatStatus";
 import "../styles/BookDetailsModal.css";
-
-const formatStatus = (status) => {
-    switch (status) {
-        case "available": return "Available";
-        case "out_of_stock": return "Out of Stock";
-        case "upcoming": return "Coming Soon";
-        default: return status?.replace(/_/g, " ") || "Unknown";
-    }
-};
 
 const BookCover = ({ book }) => (
     <div className="modal-book-cover">
@@ -29,9 +24,7 @@ const BookInfo = ({ book }) => (
     <>
         <h2 className="modal-book-title">{book.title}</h2>
         <p className="modal-book-author">by {book.author}</p>
-        <p className="modal-book-price">
-            ${parseFloat(book.price).toFixed(2)}
-        </p>
+        <p className="modal-book-price">${parseFloat(book.price).toFixed(2)}</p>
         <p className="modal-book-status">
             Status:{" "}
             <span className={`status-tag ${book.bookStatus}`}>
@@ -59,14 +52,14 @@ const CartControls = ({
     onDecrease,
     onIncrease,
     onAddToCart,
-    onQuantityChange
+    onQuantityChange,
 }) => (
     <div className="cart-controls">
         <div className="quantity-control">
             <button
                 className="quantity-btn minus"
                 onClick={onDecrease}
-                disabled={quantity <= 1 || !isAvailable || loading}
+                disabled={quantity <= 0 || !isAvailable || loading}
                 aria-label="Decrease quantity"
             >
                 −
@@ -76,7 +69,7 @@ const CartControls = ({
                 className="quantity-input"
                 value={quantity}
                 onChange={onQuantityChange}
-                min="1"
+                min="0"
                 max={maxStock}
                 disabled={!isAvailable || loading}
                 aria-label="Quantity"
@@ -101,92 +94,26 @@ const CartControls = ({
     </div>
 );
 
-const BookDetailsModal = ({ book, onClose }) => {
-    const [quantity, setQuantity] = useState(1);
-    const [showSuccess, setShowSuccess] = useState(false);
+const BookDetailsModal = ({ book, onClose, modalRef }) => {
     const { addToCart, loading } = useCart();
-    const modalRef = useRef(null);
 
-    const handleQuantityChange = (e) => {
-        const value = parseInt(e.target.value, 10);
+    const isAvailable = book?.bookStatus === "available";
+    const maxStock = book?.stock !== undefined ? book.stock : 10;
 
-        if (!isNaN(value)) {
-            if (value >= 1 && value <= maxStock && isAvailable) {
-                setQuantity(value);
-            } else if (value > maxStock) {
-                setQuantity(maxStock);
-            } else if (value < 1) {
-                setQuantity(1);
-            }
-        }
-    };
+    const { quantity, handleDecrease, handleIncrease, handleChange } =
+        useQuantityControl(1, maxStock, isAvailable, book?.bookId);
 
-    useEffect(() => {
-        setQuantity(1);
-    }, [book?.bookId]);
+    useModalAccessibility(modalRef, onClose);
 
-    useEffect(() => {
-        const handleEscape = (e) => {
-            if (e.key === 'Escape') onClose();
-        };
-
-        window.addEventListener('keydown', handleEscape);
-        return () => window.removeEventListener('keydown', handleEscape);
-    }, [onClose]);
-
-    useEffect(() => {
-        const modal = modalRef.current;
-        if (modal) {
-            const focusableElements = modal.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            );
-
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-
-            firstElement?.focus();
-
-            const trapFocus = (e) => {
-                if (e.key === 'Tab') {
-                    if (e.shiftKey && document.activeElement === firstElement) {
-                        e.preventDefault();
-                        lastElement?.focus();
-                    } else if (!e.shiftKey && document.activeElement === lastElement) {
-                        e.preventDefault();
-                        firstElement?.focus();
-                    }
-                }
-            };
-
-            modal.addEventListener('keydown', trapFocus);
-            return () => modal.removeEventListener('keydown', trapFocus);
-        }
-    }, []);
+    const { showSuccess, displaySuccess } = useSuccessMessage();
 
     if (!book) return null;
 
-    const isAvailable = book.bookStatus === "available";
-    const maxStock = book.stock !== undefined ? book.stock : 10;
-
-    const decreaseQuantity = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-        }
-    };
-
-    const increaseQuantity = () => {
-        if (quantity < maxStock && isAvailable) {
-            setQuantity(quantity + 1);
-        }
-    };
-
     const handleAddToCart = async () => {
+        if (quantity === 0) return;
         const success = await addToCart(book, quantity);
         if (success) {
-            setShowSuccess(true);
-            setTimeout(() => {
-                setShowSuccess(false);
-            }, 2000);
+            displaySuccess();
         }
     };
 
@@ -222,21 +149,16 @@ const BookDetailsModal = ({ book, onClose }) => {
                             isAvailable={isAvailable}
                             loading={loading}
                             maxStock={maxStock}
-                            onDecrease={decreaseQuantity}
-                            onIncrease={increaseQuantity}
+                            onDecrease={handleDecrease}
+                            onIncrease={handleIncrease}
                             onAddToCart={handleAddToCart}
-                            onQuantityChange={handleQuantityChange}
+                            onQuantityChange={handleChange}
                         />
                     </div>
                 </div>
 
-                {/* Success message overlay with improved accessibility */}
                 {showSuccess && (
-                    <div
-                        className="success-message"
-                        role="alert"
-                        aria-live="assertive"
-                    >
+                    <div className="success-message" role="alert" aria-live="assertive">
                         Added to cart!
                     </div>
                 )}

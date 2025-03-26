@@ -9,8 +9,7 @@ const SearchFilters = ({
     onStatusChange,
     selectedGenre,
     onGenreChange,
-    genres,
-    resultsCount,
+    genres = [],
     isLoading = false,
 }) => {
     const [mobileExpanded, setMobileExpanded] = useState(false);
@@ -141,9 +140,15 @@ SearchFilters.propTypes = {
     onStatusChange: PropTypes.func.isRequired,
     selectedGenre: PropTypes.string.isRequired,
     onGenreChange: PropTypes.func.isRequired,
-    genres: PropTypes.array.isRequired,
+    genres: PropTypes.array,
     resultsCount: PropTypes.number,
     isLoading: PropTypes.bool,
+};
+
+SearchFilters.defaultProps = {
+    genres: [],
+    resultsCount: 0,
+    isLoading: false,
 };
 
 export default SearchFilters;

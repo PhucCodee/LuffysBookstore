@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import BookCard from './BookCard';
-import '../styles/BookRow.css';
+import React from "react";
+import PropTypes from "prop-types";
+import BookCard from "./BookCard";
+import useCarousel from "../hooks/useCarousel";
+import useContentRenderer from "../hooks/useContentRenderer";
+import "../styles/BookRow.css";
 
-// Extract SVG components for cleaner code
 const ArrowLeftIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -57,116 +58,38 @@ const ErrorState = () => (
 
 // Empty State Component
 const EmptyState = () => (
-    <p className="no-books-message">
-        No books available in this category
-    </p>
+    <p className="no-books-message">No books available in this category</p>
 );
 
-const BookRow = ({ title, books = [], isLoading = false, error = null, hideStatus = false, onBookClick }) => {
-    const scrollContainerRef = useRef(null);
-    const [showLeftArrow, setShowLeftArrow] = useState(false);
-    const [showRightArrow, setShowRightArrow] = useState(true);
-    const [touchStartX, setTouchStartX] = useState(null);
+const BookRow = ({
+    title,
+    books = [],
+    isLoading = false,
+    error = null,
+    hideStatus = false,
+    onBookClick,
+}) => {
+    const { scrollContainerRef, showLeftArrow, showRightArrow, scroll } =
+        useCarousel([books]);
 
-    const scroll = useCallback((direction) => {
-        if (scrollContainerRef.current) {
-            const container = scrollContainerRef.current;
-            const scrollAmount = 600;
+    const { renderItems } = useContentRenderer();
 
-            if (direction === "left") {
-                container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-            } else {
-                container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-            }
-        }
-    }, []);
-
-    const checkScrollPosition = useCallback(() => {
-        if (scrollContainerRef.current) {
-            const container = scrollContainerRef.current;
-
-            const isAtStart = container.scrollLeft <= 5;
-            const isAtEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth - 5;
-
-            setShowLeftArrow(!isAtStart);
-            setShowRightArrow(!isAtEnd);
-        }
-    }, []);
-
-    const handleTouchStart = useCallback((e) => {
-        setTouchStartX(e.touches[0].clientX);
-    }, []);
-
-    const handleTouchMove = useCallback((e) => {
-        if (touchStartX === null) return;
-
-        const touchEndX = e.touches[0].clientX;
-        const diffX = touchStartX - touchEndX;
-
-        if (Math.abs(diffX) > 30) {
-            if (diffX > 0 && showRightArrow) {
-                scroll('right');
-            } else if (diffX < 0 && showLeftArrow) {
-                scroll('left');
-            }
-            setTouchStartX(null);
-        }
-    }, [touchStartX, showLeftArrow, showRightArrow, scroll]);
-
-    const handleTouchEnd = useCallback(() => {
-        setTouchStartX(null);
-    }, []);
-
-    const handleKeyDown = useCallback((e) => {
-        if (document.activeElement === scrollContainerRef.current) {
-            if (e.key === 'ArrowLeft' && showLeftArrow) {
-                e.preventDefault();
-                scroll('left');
-            } else if (e.key === 'ArrowRight' && showRightArrow) {
-                e.preventDefault();
-                scroll('right');
-            }
-        }
-    }, [scroll, showLeftArrow, showRightArrow]);
-
-    useEffect(() => {
-        const container = scrollContainerRef.current;
-        if (container) {
-            container.addEventListener("scroll", checkScrollPosition);
-            container.addEventListener("touchstart", handleTouchStart);
-            container.addEventListener("touchmove", handleTouchMove);
-            container.addEventListener("touchend", handleTouchEnd);
-            container.addEventListener("keydown", handleKeyDown);
-
-            checkScrollPosition();
-
-            window.addEventListener("resize", checkScrollPosition);
-
-            return () => {
-                container.removeEventListener("scroll", checkScrollPosition);
-                container.removeEventListener("touchstart", handleTouchStart);
-                container.removeEventListener("touchmove", handleTouchMove);
-                container.removeEventListener("touchend", handleTouchEnd);
-                container.removeEventListener("keydown", handleKeyDown);
-                window.removeEventListener("resize", checkScrollPosition);
-            };
-        }
-    }, [checkScrollPosition, handleTouchStart, handleTouchMove, handleTouchEnd, handleKeyDown, books]);
-
-    const renderContent = () => {
-        if (isLoading) return <LoadingState />;
-        if (error) return <ErrorState />;
-        if (books.length === 0) return <EmptyState />;
-
-        return books.map((book) => (
+    const bookContent = renderItems({
+        isLoading,
+        error,
+        items: books,
+        renderItem: (book) => (
             <BookCard
                 key={book.bookId}
                 book={book}
                 hideStatus={hideStatus}
                 onBookClick={onBookClick}
             />
-        ));
-    };
+        ),
+        LoadingState,
+        ErrorState,
+        EmptyState,
+    });
 
     return (
         <section className="book-row">
@@ -191,7 +114,7 @@ const BookRow = ({ title, books = [], isLoading = false, error = null, hideStatu
                     role="region"
                     aria-label={`${title} books carousel`}
                 >
-                    {renderContent()}
+                    {bookContent}
                 </div>
 
                 {showRightArrow && (
@@ -214,7 +137,7 @@ BookRow.propTypes = {
     isLoading: PropTypes.bool,
     error: PropTypes.any,
     hideStatus: PropTypes.bool,
-    onBookClick: PropTypes.func
+    onBookClick: PropTypes.func,
 };
 
 export default React.memo(BookRow);
