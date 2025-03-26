@@ -121,7 +121,6 @@ public class BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
 
-        // Enforce status consistency with stock
         if (status == Book.BookStatus.available && book.getStock() == 0) {
             throw new IllegalArgumentException("Cannot set status to available when stock is 0");
         }
@@ -140,28 +139,23 @@ public class BookService {
             String direction, String bookStatus, String genre) {
 
         try {
-            // Create pageable object for pagination and sorting
             Sort.Direction sortDirection = direction.equalsIgnoreCase("desc")
                     ? Sort.Direction.DESC : Sort.Direction.ASC;
             Sort sort = Sort.by(sortDirection, sortField);
             PageRequest pageable = PageRequest.of(page, size, sort);
 
-            // Build dynamic query using Specification
             Specification<Book> spec = Specification.where(null);
 
-            // Add title/author/description search if query is provided
             if (query != null && !query.trim().isEmpty()) {
                 String searchTerm = "%" + query.toLowerCase() + "%";
                 spec = spec.and((root, criteriaQuery, criteriaBuilder)
                         -> criteriaBuilder.or(
                                 criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), searchTerm),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("author")), searchTerm),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("bookDescription")), searchTerm)
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("author")), searchTerm)
                         )
                 );
             }
 
-            // Add status filter if provided
             if (bookStatus != null && !bookStatus.isEmpty() && !bookStatus.equalsIgnoreCase("all")) {
                 Book.BookStatus status;
                 try {
@@ -174,17 +168,14 @@ public class BookService {
                 }
             }
 
-            // Add genre filter if provided
             if (genre != null && !genre.isEmpty() && !genre.equalsIgnoreCase("all")) {
                 spec = spec.and((root, criteriaQuery, criteriaBuilder)
                         -> criteriaBuilder.equal(root.get("genre"), genre)
                 );
             }
 
-            // Execute the query
             Page<Book> booksPage = bookRepository.findAll(spec, pageable);
 
-            // Prepare the result
             Map<String, Object> result = new HashMap<>();
             result.put("content", booksPage.getContent());
             result.put("currentPage", booksPage.getNumber());
