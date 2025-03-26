@@ -59,54 +59,374 @@ INSERT INTO
         Stock
     )
 VALUES (
-        'One Piece: New World',
+        'Parable of the Sower',
         19.99,
-        'The Straw Hat Pirates journey into the New World',
+        'This is a test!',
         'available',
-        'one_piece_cover.jpg',
-        'Manga',
-        'Eiichiro Oda',
+        'https://images-us.bookshop.org/ingram/9781538732182.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Octavia E Butler',
         100
     ),
     (
-        'The World of Programming',
-        29.99,
-        'A comprehensive guide to modern programming languages',
+        '1984',
+        10.99,
+        'This is a test!',
         'available',
-        'programming_cover.jpg',
-        'Education',
-        'John Coder',
+        'https://images-us.bookshop.org/ingram/9780451524935.jpg?width=384&v=v2',
+        'Science Fiction',
+        'George Orwell',
         50
     ),
     (
-        'History of Grand Line',
-        15.99,
-        'Historical account of the Grand Line and its islands',
+        'I Who Have Never Known Men',
+        16.95,
+        'This is a test!',
         'out_of_stock',
-        'history_cover.jpg',
-        'History',
-        'Edward Newgate',
+        'https://images-us.bookshop.org/ingram/9781945492600.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Jacqueline Harpman',
         0
     ),
     (
-        'Cooking with Sanji',
-        24.99,
-        'Recipes from the Straw Hat Pirates chef',
+        'This Is How You Lose the Time War',
+        17.99,
+        'This is a test!',
         'available',
-        'cooking_cover.jpg',
-        'Cookbook',
-        'Sanji Vinsmoke',
+        'https://images-us.bookshop.org/ingram/9781534430990.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Max Gladstone',
         30
     ),
     (
-        'The Next Devil Fruit',
-        18.99,
-        'Upcoming guide to mythical devil fruits',
+        "The Handmaid's Tale",
+        18.00,
+        'This is a test!',
         'upcoming',
-        'devil_fruit_cover.jpg',
-        'Fantasy',
-        'Dr. Vegapunk',
+        'https://images-us.bookshop.org/ingram/9780385490818.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Margaret Atwood',
         0
+    ),
+    (
+        "Brave New World",
+        17.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780060850524.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Aldous Huxley',
+        60
+    ),
+    (
+        "Mickey7",
+        19.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781250875280.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Edward Ashton',
+        30
+    ),
+    (
+        "Star Wars: The Mask of Fear (Reign of the Empire)",
+        30.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780593723463.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Alexander Freed',
+        55
+    ),
+    (
+        "Murder by Memory",
+        21.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781250342249.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Olivia Waite',
+        90
+    ),
+    (
+        "Dune",
+        10.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780441172719.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Frank Herbert',
+        35
+    ),
+    (
+        "The Thursday Murder Club",
+        10.99,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9781984880987.jpg?width=384&v=v2',
+        'Mystery',
+        'Richard Osman',
+        0
+    ),
+    (
+        "The Buffalo Hunter Hunter",
+        29.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781668075081.jpg?width=384&v=v2',
+        'Horror',
+        'Stephen Graham Jones',
+        50
+    ),
+    (
+        "Between Two Fires",
+        18.95,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9798662731349.jpg?width=384&v=v2',
+        'Horror',
+        'Christopher Buehlman',
+        0
+    ),
+    (
+        "The Book of Accidents",
+        19.00,
+        'This is a test!',
+        'out_of_stock',
+        'https://images-us.bookshop.org/ingram/9780399182150.jpg?width=384&v=v2',
+        'Horror',
+        'Chuck Wendig',
+        0
+    ),
+    (
+        "Never Flinch",
+        32.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781668089330.jpg?width=384&v=v2',
+        'Horror',
+        'Stephen King',
+        20
+    ),
+    (
+        "Wake Up and Open Your Eyes",
+        24.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781683693956.jpg?width=384&v=v2',
+        'Horror',
+        'Clay McLeod Chapman',
+        60
+    ),
+    (
+        "The Lamb",
+        27.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780063374607.jpg?width=384&v=v2',
+        'Horror',
+        'Lucy Rose',
+        30
+    ),
+    (
+        "Bad Dreams in the Night",
+        24.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781524887186.jpg?width=384&v=v2',
+        'Horror',
+        'Adam Ellis',
+        10
+    ),
+    (
+        "Ring Shout",
+        20.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781250767028.jpg?width=384&v=v2',
+        'Horror',
+        'P Djèlí Clark',
+        20
+    ),
+    (
+        "Where Sleeping Girls Lie",
+        19.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781250800848.jpg?width=384&v=v2',
+        'Horror',
+        'Faridah Àbíké - Íyímídé',
+        40
+    ),
+    (
+        "What Feasts at Night",
+        19.99,
+        'This is a test!',
+        'out_of_stock',
+        'https://images-us.bookshop.org/ingram/9781250830852.jpg?width=384&v=v2',
+        'Horror',
+        'T.Kingfisher',
+        0
+    ),
+    (
+        "Abundance",
+        19.99,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9781668023488.jpg?width=384&v=v2',
+        'Politics',
+        'Derek Thompson',
+        0
+    ),
+    (
+        "The Deer and the Dragon",
+        18.99,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9781728280172.jpg?width=384&v=v2',
+        'Romance',
+        'Piper Cj',
+        0
+    ),
+    (
+        "The Odyssey",
+        18.95,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9780393356250.jpg?width=384&v=v2',
+        'Poetry',
+        'Homer',
+        0
+    ),
+    (
+        "To Kill a Mockingbird",
+        16.99,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9780060935467.jpg?width=384&v=v2',
+        'Fantasy',
+        'Harper Lee',
+        0
+    ),
+    (
+        "The Bluest Eye",
+        16.00,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9780307278449.jpg?width=384&v=v2',
+        'Literature',
+        'Toni Morrison',
+        0
+    ),
+    (
+        "Shift",
+        29.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780593444412.jpg?width=640&v=v2',
+        'Science & Technology',
+        'Ethan Kross',
+        20
+    ),
+    (
+        "How the World Eats",
+        32.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781639368198.jpg?width=384&v=v2',
+        'Science & Technology',
+        'Julian Baggini',
+        30
+    ),
+    (
+        "Life in Three Dimensions",
+        27.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780385550390.jpg?width=384&v=v2',
+        'Science & Technology',
+        'Shigehiro Oishi',
+        40
+    ),
+    (
+        "Ends of the Earth",
+        32.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780593186527.jpg?width=384&v=v2',
+        'Science & Technology',
+        'Neil Shubin',
+        30
+    ),
+    (
+        "Air - Borne",
+        32.00,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9780593473597.jpg?width=640&v=v2',
+        'Science & Technology',
+        'Carl Zimmer',
+        0
+    ),
+    (
+        "Everything Is Tuberculosis",
+        28.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780525556572.jpg?width=384&v=v2',
+        'Science & Technology',
+        'John Green',
+        20
+    ),
+    (
+        "What If We Get It Right ?",
+        34.00,
+        'This is a test!',
+        'out_of_stock',
+        'https://images-us.bookshop.org/ingram/9780593229361.jpg?width=384&v=v2',
+        'Science & Technology',
+        'Ayana Elizabeth Johnson',
+        0
+    ),
+    (
+        "Breath",
+        29.00,
+        'This is a test!',
+        'out_of_stock',
+        'https://images-us.bookshop.org/ingram/9780735213616.jpg?width=384&v=v2',
+        'Science & Technology',
+        'James Nestor',
+        0
+    ),
+    (
+        "You Deserve a Tech Union",
+        20.00,
+        'This is a test!',
+        'out_of_stock',
+        'https://images-us.bookshop.org/ingram/9798991542005.jpg?width=384&v=v2',
+        'Science & Technology',
+        'Ethan Marcotte',
+        0
+    ),
+    (
+        "Doppelganger",
+        20.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781250338143.jpg?width=384&v=v2',
+        'Science & Technology',
+        'Naomi Klein',
+        30
+    ),
+    (
+        "You Must Take Part in Revolution",
+        23.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781951491291.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Badiucao',
+        40
     );
 
 -- Mock data for Cart table
