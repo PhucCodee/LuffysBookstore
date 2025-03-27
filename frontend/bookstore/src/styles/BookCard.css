@@ -44,15 +44,15 @@
 }
 
 .book-info {
-    padding: 12px 8px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     height: 120px;
 }
 
 .book-title {
-    margin: 0 0;
-    font-size: 16px;
+    margin: 0;
+    font-size: 18px;
     font-weight: 600;
     color: #333;
     display: -webkit-box;
@@ -60,24 +60,29 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.3;
-    height: 44px;
+    height: 50px;
+    width: 100%;
 }
 
 .book-author {
-    margin: 0 0;
+    margin: 0;
     font-size: 14px;
     color: #666;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 20px;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .book-price {
-    margin: 10px 0 0 0;
+    margin: 0;
     font-weight: 600;
     color: #e63946;
     font-size: 15px;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .book-category {
@@ -88,7 +93,6 @@
     padding: 2px 8px;
     border-radius: 12px;
     align-self: flex-start;
-    margin: 10px 0 0 0;
 }
 
 .book-badge {

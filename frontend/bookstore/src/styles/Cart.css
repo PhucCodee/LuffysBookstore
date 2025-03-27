@@ -1,0 +1,354 @@
+.cart-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cart-container h1 {
+    margin: 20px 0 30px;
+    color: #2c3e50;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.loading-spinner::before {
+    content: "";
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #4a80b1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 3rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.empty-cart-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #cccccc;
+}
+
+.empty-cart h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.empty-cart p {
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+/* Cart items table */
+.cart-items {
+    margin-bottom: 2rem;
+    overflow-x: auto;
+}
+
+.cart-items table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-items th {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid #eee;
+    font-weight: 600;
+    color: #666;
+}
+
+.cart-items td {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.item-details {
+    width: 50%;
+}
+
+.book-info {
+    display: flex;
+    align-items: center;
+}
+
+.book-thumbnail {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    margin-right: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.author {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.stock-warning {
+    color: #e53935;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.price,
+.item-total {
+    font-weight: 600;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.quantity-button:hover {
+    background-color: #f5f5f5;
+}
+
+.quantity-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quantity-display {
+    margin: 0 0.8rem;
+    min-width: 2rem;
+    text-align: center;
+}
+
+.remove-button {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.remove-button:hover {
+    color: #e53935;
+}
+
+/* Cart summary */
+.cart-summary {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cart-summary h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.shipping-estimate {
+    font-style: italic;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.summary-row.total {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.cart-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.button-primary,
+.button-secondary {
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    border: none;
+}
+
+.button-primary {
+    background-color: #4a80b1;
+    color: white;
+}
+
+.button-primary:hover {
+    background-color: #3a6491;
+}
+
+.button-primary:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.button-secondary {
+    background-color: white;
+    border: 1px solid #4a80b1;
+    color: #4a80b1;
+}
+
+.button-secondary:hover {
+    background-color: #f5f7fa;
+}
+
+.checkout-warning {
+    margin-top: 1rem;
+    color: #e53935;
+    font-size: 0.9rem;
+}
+
+.error-message {
+    padding: 1.5rem;
+    background-color: #ffebee;
+    border-radius: 8px;
+    margin: 2rem 0;
+    color: #e53935;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .cart-container {
+        padding: 1rem;
+    }
+
+    .book-thumbnail {
+        width: 60px;
+        height: 90px;
+    }
+
+    .cart-summary {
+        max-width: 100%;
+        margin-top: 2rem;
+    }
+
+    .cart-actions {
+        flex-direction: column;
+    }
+
+    .button-primary,
+    .button-secondary {
+        width: 100%;
+    }
+
+    /* Responsive table */
+    .cart-items table {
+        display: block;
+    }
+
+    .cart-items thead {
+        display: none;
+    }
+
+    .cart-items tbody,
+    .cart-items tr {
+        display: block;
+    }
+
+    .cart-items tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    .cart-items td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border: none;
+    }
+
+    .cart-items td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        margin-right: 1rem;
+    }
+
+    .cart-items td.item-details {
+        width: 100%;
+        display: block;
+    }
+}
+
+/* Utility classes */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

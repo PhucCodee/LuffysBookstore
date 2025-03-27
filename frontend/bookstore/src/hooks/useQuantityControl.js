@@ -1,6 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-const useQuantityControl = (initialValue = 0, maxValue = 10, isAvailable = true, resetDependency = null) => {
+const useQuantityControl = (
+    initialValue = 0,
+    maxValue = 10,
+    isAvailable = true,
+    resetDependency = null
+) => {
     const [quantity, setQuantity] = useState(initialValue);
 
     useEffect(() => {
@@ -37,7 +42,7 @@ const useQuantityControl = (initialValue = 0, maxValue = 10, isAvailable = true,
         quantity,
         handleDecrease,
         handleIncrease,
-        handleChange
+        handleChange,
     };
 };
 

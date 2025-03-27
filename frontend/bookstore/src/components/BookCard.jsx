@@ -47,7 +47,7 @@ const BookCard = ({ book, hideStatus, onBookClick }) => {
             </div>
 
             <div className="book-info">
-                <h3 className="book-title" title={book.title}>{book.title}</h3>
+                <p className="book-title" title={book.title}>{book.title}</p>
                 <p className="book-author" title={book.author}>{book.author}</p>
                 <p className="book-price">{formatPrice(book.price)}</p>
                 {book.genre && <span className="book-category">{book.genre}</span>}

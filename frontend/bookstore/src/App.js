@@ -1,9 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
-import Home from './pages/Home';
-import BookSearch from './pages/BookSearch';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CartProvider } from "./context/CartContext";
+import Home from "./pages/Home";
+import BookSearch from "./pages/BookSearch";
+import Cart from "./pages/Cart";
+import "./App.css";
 
 function App() {
   return (
@@ -22,13 +23,6 @@ function App() {
     </CartProvider>
   );
 }
-
-const Cart = () => (
-  <div className="page-container">
-    <h1>Shopping Cart Page</h1>
-    <p>Your cart items will appear here</p>
-  </div>
-);
 
 const Profile = () => (
   <div className="page-container">
