@@ -17,14 +17,15 @@ const BookCover = ({ book }) => (
 );
 
 const BookDetails = ({ book }) => (
-    <div className="book-details">
-        <h3 className="book-title">{book.title}</h3>
-        <p className="book-author">by {book.author}</p>
-
-        <div className="book-meta">
-            <span className="book-price">{formatPrice(book.price)}</span>
-            {book.genre && <span className="book-category">{book.genre}</span>}
-        </div>
+    <div className="book-info">
+        <p className="book-title" title={book.title}>
+            {book.title}
+        </p>
+        <p className="book-author" title={book.author}>
+            by {book.author}
+        </p>
+        <p className="book-price">{formatPrice(book.price)}</p>
+        {book.genre && <span className="book-category">{book.genre}</span>}
 
         {book.bookStatus === "out_of_stock" && (
             <p className="stock-warning">Out of stock</p>
@@ -56,9 +57,7 @@ const QuantityControl = ({ quantity, onQuantityChange }) => (
 const ItemSubtotal = ({ price, quantity }) => (
     <div className="item-subtotal">
         <span className="subtotal-label">Subtotal:</span>
-        <span className="subtotal-value">
-            {formatPrice(price * quantity)}
-        </span>
+        <span className="subtotal-value">{formatPrice(price * quantity)}</span>
     </div>
 );
 
@@ -69,7 +68,12 @@ const CartBookItem = ({ book, quantity, onQuantityChange, onRemove }) => {
             <BookDetails book={book} />
 
             <div className="book-actions">
-                {onQuantityChange && <QuantityControl quantity={quantity} onQuantityChange={onQuantityChange} />}
+                {onQuantityChange && (
+                    <QuantityControl
+                        quantity={quantity}
+                        onQuantityChange={onQuantityChange}
+                    />
+                )}
 
                 {onRemove && (
                     <button
@@ -81,7 +85,9 @@ const CartBookItem = ({ book, quantity, onQuantityChange, onRemove }) => {
                     </button>
                 )}
 
-                {quantity > 0 && book.price && <ItemSubtotal price={book.price} quantity={quantity} />}
+                {quantity > 0 && book.price && (
+                    <ItemSubtotal price={book.price} quantity={quantity} />
+                )}
             </div>
         </div>
     );

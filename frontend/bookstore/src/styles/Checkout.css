@@ -1,0 +1,39 @@
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.checkout-container h1 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+}
+
+.checkout-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.checkout-left {
+    flex: 1 1 60%;
+    min-width: 300px;
+}
+
+.checkout-right {
+    flex: 1 1 35%;
+    min-width: 300px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .checkout-content {
+        flex-direction: column;
+    }
+
+    .checkout-left,
+    .checkout-right {
+        width: 100%;
+    }
+}
