@@ -7,7 +7,7 @@ import formatStatus from "../utils/formatStatus";
 import "../styles/BookDetailsModal.css";
 
 const BookCover = ({ book }) => (
-    <div className="modal-book-cover">
+    <div className="book-modal__cover">
         <img
             src={book.cover || "/bookcovers/placeholder.jpg"}
             alt={`${book.title} cover`}
@@ -22,22 +22,22 @@ const BookCover = ({ book }) => (
 
 const BookInfo = ({ book }) => (
     <>
-        <h2 className="modal-book-title">{book.title}</h2>
-        <p className="modal-book-author">by {book.author}</p>
-        <p className="modal-book-price">${parseFloat(book.price).toFixed(2)}</p>
-        <p className="modal-book-status">
+        <h2 className="book-modal__title">{book.title}</h2>
+        <p className="book-modal__author">by {book.author}</p>
+        <p className="book-modal__price">${parseFloat(book.price).toFixed(2)}</p>
+        <p className="book-modal__status">
             Status:{" "}
-            <span className={`status-tag ${book.bookStatus}`}>
+            <span className={`book-modal__status-tag book-modal__status-tag--${book.bookStatus}`}>
                 {formatStatus(book.bookStatus)}
             </span>
         </p>
-        <p className="modal-book-genre">Genre: {book.genre}</p>
+        <p className="book-modal__genre">Genre: {book.genre}</p>
         {book.stock !== undefined && (
-            <p className="modal-book-stock">Stock: {book.stock}</p>
+            <p className="book-modal__stock">Stock: {book.stock}</p>
         )}
-        <div className="modal-book-description">
-            <h3>Description</h3>
-            <p className="book-description">
+        <div className="book-modal__description-container">
+            <h3 className="book-modal__description-title">Description</h3>
+            <p className="book-modal__description-text">
                 {book.bookDescription || "No description available."}
             </p>
         </div>
@@ -54,10 +54,10 @@ const CartControls = ({
     onAddToCart,
     onQuantityChange,
 }) => (
-    <div className="cart-controls">
-        <div className="quantity-control">
+    <div className="book-modal__cart-controls">
+        <div className="book-modal__quantity-control">
             <button
-                className="quantity-btn minus"
+                className="book-modal__quantity-btn book-modal__quantity-btn--minus"
                 onClick={onDecrease}
                 disabled={quantity <= 0 || !isAvailable || loading}
                 aria-label="Decrease quantity"
@@ -66,7 +66,7 @@ const CartControls = ({
             </button>
             <input
                 type="number"
-                className="quantity-input"
+                className="book-modal__quantity-input"
                 value={quantity}
                 onChange={onQuantityChange}
                 min="0"
@@ -75,7 +75,7 @@ const CartControls = ({
                 aria-label="Quantity"
             />
             <button
-                className="quantity-btn plus"
+                className="book-modal__quantity-btn book-modal__quantity-btn--plus"
                 onClick={onIncrease}
                 disabled={!isAvailable || quantity >= maxStock || loading}
                 aria-label="Increase quantity"
@@ -85,7 +85,7 @@ const CartControls = ({
         </div>
 
         <button
-            className="add-to-cart-btn"
+            className="book-modal__add-btn"
             onClick={onAddToCart}
             disabled={!isAvailable || loading}
         >
@@ -119,29 +119,29 @@ const BookDetailsModal = ({ book, onClose, modalRef }) => {
 
     return (
         <div
-            className="modal-backdrop"
+            className="book-modal__backdrop"
             onClick={onClose}
             aria-modal="true"
             role="dialog"
             aria-labelledby="modal-title"
         >
             <div
-                className="book-details-modal"
+                className="book-modal"
                 onClick={(e) => e.stopPropagation()}
                 ref={modalRef}
             >
                 <button
-                    className="modal-close-btn"
+                    className="book-modal__close-btn"
                     onClick={onClose}
                     aria-label="Close modal"
                 >
                     ×
                 </button>
 
-                <div className="modal-content">
+                <div className="book-modal__content">
                     <BookCover book={book} />
 
-                    <div className="modal-book-info">
+                    <div className="book-modal__info">
                         <BookInfo book={book} />
 
                         <CartControls
@@ -158,7 +158,7 @@ const BookDetailsModal = ({ book, onClose, modalRef }) => {
                 </div>
 
                 {showSuccess && (
-                    <div className="success-message" role="alert" aria-live="assertive">
+                    <div className="book-modal__success-message" role="alert" aria-live="assertive">
                         Added to cart!
                     </div>
                 )}
