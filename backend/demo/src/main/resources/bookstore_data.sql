@@ -66,7 +66,7 @@ VALUES (
         'https://images-us.bookshop.org/ingram/9781538732182.jpg?width=384&v=v2',
         'Science Fiction',
         'Octavia E Butler',
-        100
+        50
     ),
     (
         '1984',
@@ -435,8 +435,7 @@ INSERT INTO
 VALUES (2),
     (3),
     (4),
-    (5),
-    (2);
+    (5);
 
 -- Mock data for CartItems table
 INSERT INTO
