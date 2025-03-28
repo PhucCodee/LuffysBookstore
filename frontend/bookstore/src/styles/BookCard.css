@@ -21,7 +21,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.book-cover {
+.book-card__cover {
     height: 270px;
     overflow: hidden;
     border-radius: 8px 8px 0 0;
@@ -30,7 +30,7 @@
     background-color: #f8f8f8;
 }
 
-.book-cover img {
+.book-card__cover-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -38,25 +38,25 @@
     display: block;
 }
 
-.book-card:hover .book-cover img,
-.book-card:focus .book-cover img {
+.book-card:hover .book-card__cover-image,
+.book-card:focus .book-card__cover-image {
     transform: scale(1.05);
 }
 
-.book-info {
+.book-card__info {
     padding: 10px;
     display: flex;
     flex-direction: column;
     height: 120px;
 }
 
-.book-title {
+.book-card__title {
     margin: 0;
     font-size: 18px;
     font-weight: 600;
     color: #333;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -64,7 +64,7 @@
     width: 100%;
 }
 
-.book-author {
+.book-card__author {
     margin: 0;
     font-size: 14px;
     color: #666;
@@ -76,7 +76,7 @@
     margin-bottom: 10px;
 }
 
-.book-price {
+.book-card__price {
     margin: 0;
     font-weight: 600;
     color: #e63946;
@@ -85,17 +85,25 @@
     margin-bottom: 10px;
 }
 
-.book-category {
+.book-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: auto;
+}
+
+.book-card__category {
     display: inline-block;
     font-size: 12px;
     background-color: #f0f0f0;
     color: #666;
     padding: 2px 8px;
     border-radius: 12px;
-    align-self: flex-start;
+    white-space: nowrap;
+    max-width: fit-content;
 }
 
-.book-badge {
+.book-card__badge {
     position: absolute;
     top: 10px;
     right: -5px;
@@ -109,7 +117,7 @@
     z-index: 5;
 }
 
-.book-badge::after {
+.book-card__badge::after {
     content: '';
     position: absolute;
     right: 0;
@@ -122,11 +130,11 @@
     clip-path: polygon(100% 0, 0 0, 100% 100%);
 }
 
-.book-badge.upcoming {
+.book-card__badge--upcoming {
     background-color: #3498db;
 }
 
-.book-badge.out-of-stock {
+.book-card__badge--out-of-stock {
     background-color: #e74c3c;
 }
 
@@ -137,7 +145,7 @@
         max-width: 160px;
     }
 
-    .book-cover {
+    .book-card__cover {
         height: 240px;
     }
 }
@@ -149,16 +157,16 @@
         margin: 8px;
     }
 
-    .book-cover {
+    .book-card__cover {
         height: 225px;
     }
 
-    .book-info {
+    .book-card__info {
         padding: 10px 6px;
         height: 100px;
     }
 
-    .book-title {
+    .book-card__title {
         font-size: 14px;
         height: 36px;
     }
@@ -171,7 +179,7 @@
         margin: 5px;
     }
 
-    .book-cover {
+    .book-card__cover {
         height: 195px;
     }
 }

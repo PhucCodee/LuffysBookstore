@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import '../styles/LoadingStates.css';
 
 export const LoadingSpinner = ({ message = "Loading...", size = "default", className = "" }) => {
-    const containerClass = `loading-container ${size === "large" ? "main-loading" : ""} ${className}`;
+    const containerClass = `loading__container ${size === "large" ? "loading__container--main" : ""} ${className}`;
 
     return (
         <div className={containerClass} role="status" aria-live="polite">
             <div
-                className={`loading-spinner ${size === "small" ? "loading-spinner-sm" : ""}`}
+                className={`loading__spinner ${size === "small" ? "loading__spinner--small" : ""}`}
                 aria-hidden="true"
             ></div>
-            <p>{message}</p>
-            <span className="sr-only">Loading content, please wait.</span>
+            <p className="loading__message">{message}</p>
+            <span className="util__sr-only">Loading content, please wait.</span>
         </div>
     );
 };
@@ -24,15 +24,15 @@ export const ErrorMessage = ({
     onRetry = null,
     className = ""
 }) => {
-    const errorClass = `error-message ${isMainError ? "main-error" : ""} ${className}`;
+    const errorClass = `error ${isMainError ? "error--main" : ""} ${className}`;
 
     return (
         <div className={errorClass} role="alert">
             <p>{message}</p>
-            {details && <small className="error-details">{details}</small>}
+            {details && <small className="error__details">{details}</small>}
             {onRetry && (
                 <button
-                    className="retry-button"
+                    className="error__retry-button"
                     onClick={onRetry}
                     aria-label="Try loading the content again"
                 >
@@ -49,9 +49,9 @@ export const EmptyState = ({
     className = ""
 }) => {
     return (
-        <div className={`empty-state ${className}`}>
-            {icon && <div className="empty-state-icon">{icon}</div>}
-            <p>{message}</p>
+        <div className={`empty ${className}`}>
+            {icon && <div className="empty__icon">{icon}</div>}
+            <p className="empty__message">{message}</p>
         </div>
     );
 };

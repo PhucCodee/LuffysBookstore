@@ -7,9 +7,9 @@ const BookBadge = ({ status }) => {
     if (!status || status === 'available') return null;
 
     const badgeText = status === 'upcoming' ? 'Coming Soon' : 'Out of Stock';
-    const badgeClass = status === 'upcoming' ? 'upcoming' : 'out-of-stock';
+    const badgeClass = status === 'upcoming' ? 'book-card__badge--upcoming' : 'book-card__badge--out-of-stock';
 
-    return <div className={`book-badge ${badgeClass}`}>{badgeText}</div>;
+    return <div className={`book-card__badge ${badgeClass}`}>{badgeText}</div>;
 };
 
 const BookCard = ({ book, hideStatus, onBookClick }) => {
@@ -33,8 +33,9 @@ const BookCard = ({ book, hideStatus, onBookClick }) => {
             role="button"
             aria-label={`View details for ${book.title} by ${book.author}`}
         >
-            <div className="book-cover">
+            <div className="book-card__cover">
                 <img
+                    className="book-card__cover-image"
                     src={book.cover || "/bookcovers/placeholder.jpg"}
                     alt={`${book.title} book cover`}
                     onError={(e) => {
@@ -46,11 +47,13 @@ const BookCard = ({ book, hideStatus, onBookClick }) => {
                 {!hideStatus && <BookBadge status={book.bookStatus} />}
             </div>
 
-            <div className="book-info">
-                <p className="book-title" title={book.title}>{book.title}</p>
-                <p className="book-author" title={book.author}>{book.author}</p>
-                <p className="book-price">{formatPrice(book.price)}</p>
-                {book.genre && <span className="book-category">{book.genre}</span>}
+            <div className="book-card__info">
+                <p className="book-card__title" title={book.title}>{book.title}</p>
+                <p className="book-card__author" title={book.author}>{book.author}</p>
+                <p className="book-card__price">{formatPrice(book.price)}</p>
+                <div className="book-card__meta">
+                    {book.genre && <span className="book-card__category">{book.genre}</span>}
+                </div>
             </div>
         </div>
     );

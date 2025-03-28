@@ -3,8 +3,9 @@ import formatPrice from "../utils/formatPrice";
 import "../styles/CartBookItem.css";
 
 const BookCover = ({ book }) => (
-    <div className="book-cover">
+    <div className="cart-item__cover">
         <img
+            className="cart-item__cover-image"
             src={book.cover || book.coverImageUrl || "/bookcovers/placeholder.jpg"}
             alt={`Cover of ${book.title}`}
             onError={(e) => {
@@ -17,35 +18,37 @@ const BookCover = ({ book }) => (
 );
 
 const BookDetails = ({ book }) => (
-    <div className="book-info">
-        <p className="book-title" title={book.title}>
+    <div className="cart-item__info">
+        <p className="cart-item__title" title={book.title}>
             {book.title}
         </p>
-        <p className="book-author" title={book.author}>
+        <p className="cart-item__author" title={book.author}>
             by {book.author}
         </p>
-        <p className="book-price">{formatPrice(book.price)}</p>
-        {book.genre && <span className="book-category">{book.genre}</span>}
+        <p className="cart-item__price">{formatPrice(book.price)}</p>
+        <div className="cart-item__meta">
+            {book.genre && <span className="cart-item__category">{book.genre}</span>}
+        </div>
 
         {book.bookStatus === "out_of_stock" && (
-            <p className="stock-warning">Out of stock</p>
+            <p className="cart-item__warning">Out of stock</p>
         )}
     </div>
 );
 
 const QuantityControl = ({ quantity, onQuantityChange }) => (
-    <div className="quantity-control">
+    <div className="cart-item__quantity">
         <button
-            className="quantity-btn decrease"
+            className="cart-item__quantity-btn cart-item__quantity-btn--decrease"
             onClick={() => onQuantityChange(quantity - 1)}
             disabled={quantity <= 1}
             aria-label="Decrease quantity"
         >
             -
         </button>
-        <span className="quantity">{quantity}</span>
+        <span className="cart-item__quantity-value">{quantity}</span>
         <button
-            className="quantity-btn increase"
+            className="cart-item__quantity-btn cart-item__quantity-btn--increase"
             onClick={() => onQuantityChange(quantity + 1)}
             aria-label="Increase quantity"
         >
@@ -55,19 +58,19 @@ const QuantityControl = ({ quantity, onQuantityChange }) => (
 );
 
 const ItemSubtotal = ({ price, quantity }) => (
-    <div className="item-subtotal">
-        <span className="subtotal-label">Subtotal:</span>
-        <span className="subtotal-value">{formatPrice(price * quantity)}</span>
+    <div className="cart-item__subtotal">
+        <span className="cart-item__subtotal-label">Subtotal:</span>
+        <span className="cart-item__subtotal-value">{formatPrice(price * quantity)}</span>
     </div>
 );
 
 const CartBookItem = ({ book, quantity, onQuantityChange, onRemove }) => {
     return (
-        <div className="cart-book-item">
+        <div className="cart-item">
             <BookCover book={book} />
             <BookDetails book={book} />
 
-            <div className="book-actions">
+            <div className="cart-item__actions">
                 {onQuantityChange && (
                     <QuantityControl
                         quantity={quantity}
@@ -77,7 +80,7 @@ const CartBookItem = ({ book, quantity, onQuantityChange, onRemove }) => {
 
                 {onRemove && (
                     <button
-                        className="remove-btn"
+                        className="cart-item__remove-btn"
                         onClick={onRemove}
                         aria-label={`Remove ${book.title} from cart`}
                     >

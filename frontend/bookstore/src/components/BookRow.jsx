@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import BookCard from "./BookCard";
 import useCarousel from "../hooks/useCarousel";
 import useContentRenderer from "../hooks/useContentRenderer";
+import { LoadingSpinner, ErrorMessage, EmptyState } from "./LoadingStates";
 import "../styles/BookRow.css";
 
 const ArrowLeftIcon = () => (
@@ -41,24 +42,22 @@ const ArrowRightIcon = () => (
     </svg>
 );
 
-// Loading State Component
-const LoadingState = () => (
-    <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Loading books...</p>
-    </div>
+const CustomLoadingState = () => (
+    <LoadingSpinner message="Loading books..." className="book-row__loading" />
 );
 
-// Error State Component
-const ErrorState = () => (
-    <div className="error-message">
-        <p>Failed to load books. Please try again later.</p>
-    </div>
+const CustomErrorState = () => (
+    <ErrorMessage
+        message="Failed to load books. Please try again later."
+        className="book-row__error"
+    />
 );
 
-// Empty State Component
-const EmptyState = () => (
-    <p className="no-books-message">No books available in this category</p>
+const CustomEmptyState = () => (
+    <EmptyState
+        message="No books available in this category"
+        className="book-row__empty"
+    />
 );
 
 const BookRow = ({
@@ -86,20 +85,20 @@ const BookRow = ({
                 onBookClick={onBookClick}
             />
         ),
-        LoadingState,
-        ErrorState,
-        EmptyState,
+        LoadingState: CustomLoadingState,
+        ErrorState: CustomErrorState,
+        EmptyState: CustomEmptyState,
     });
 
     return (
         <section className="book-row">
-            <div className="row-header">
-                <h2 className="row-title">{title}</h2>
+            <div className="book-row__header">
+                <h2 className="book-row__title">{title}</h2>
             </div>
-            <div className="books-container-wrapper">
+            <div className="book-row__container-wrapper">
                 {showLeftArrow && (
                     <button
-                        className="nav-arrow left-arrow"
+                        className="book-row__nav-arrow book-row__nav-arrow--left"
                         onClick={() => scroll("left")}
                         aria-label={`Scroll left in ${title}`}
                     >
@@ -108,7 +107,7 @@ const BookRow = ({
                 )}
 
                 <div
-                    className="books-container"
+                    className="book-row__container"
                     ref={scrollContainerRef}
                     tabIndex={0}
                     role="region"
@@ -119,7 +118,7 @@ const BookRow = ({
 
                 {showRightArrow && (
                     <button
-                        className="nav-arrow right-arrow"
+                        className="book-row__nav-arrow book-row__nav-arrow--right"
                         onClick={() => scroll("right")}
                         aria-label={`Scroll right in ${title}`}
                     >
