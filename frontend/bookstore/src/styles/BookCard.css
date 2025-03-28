@@ -21,7 +21,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.book-card__cover {
+.book-card__cover-wrapper {
     height: 270px;
     overflow: hidden;
     border-radius: 8px 8px 0 0;
@@ -30,16 +30,8 @@
     background-color: #f8f8f8;
 }
 
-.book-card__cover-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-    display: block;
-}
-
-.book-card:hover .book-card__cover-image,
-.book-card:focus .book-card__cover-image {
+.book-card:hover .book-cover__image,
+.book-card:focus .book-cover__image {
     transform: scale(1.05);
 }
 
@@ -118,7 +110,7 @@
 }
 
 .book-card__badge::after {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     bottom: -5px;

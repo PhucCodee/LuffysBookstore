@@ -4,21 +4,8 @@ import useModalAccessibility from "../hooks/useAccessibleModal";
 import useQuantityControl from "../hooks/useQuantityControl";
 import useSuccessMessage from "../hooks/useSuccessMessage";
 import formatStatus from "../utils/formatStatus";
+import BookCover from "../components/BookCover";
 import "../styles/BookDetailsModal.css";
-
-const BookCover = ({ book }) => (
-    <div className="book-modal__cover">
-        <img
-            src={book.cover || "/bookcovers/placeholder.jpg"}
-            alt={`${book.title} cover`}
-            onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "/bookcovers/placeholder.jpg";
-            }}
-            loading="lazy"
-        />
-    </div>
-);
 
 const BookInfo = ({ book }) => (
     <>
@@ -27,7 +14,9 @@ const BookInfo = ({ book }) => (
         <p className="book-modal__price">${parseFloat(book.price).toFixed(2)}</p>
         <p className="book-modal__status">
             Status:{" "}
-            <span className={`book-modal__status-tag book-modal__status-tag--${book.bookStatus}`}>
+            <span
+                className={`book-modal__status-tag book-modal__status-tag--${book.bookStatus}`}
+            >
                 {formatStatus(book.bookStatus)}
             </span>
         </p>
@@ -139,7 +128,11 @@ const BookDetailsModal = ({ book, onClose, modalRef }) => {
                 </button>
 
                 <div className="book-modal__content">
-                    <BookCover book={book} />
+                    <BookCover
+                        book={book}
+                        className="book-modal__book-cover"
+                        size="large"
+                    />
 
                     <div className="book-modal__info">
                         <BookInfo book={book} />
@@ -158,7 +151,11 @@ const BookDetailsModal = ({ book, onClose, modalRef }) => {
                 </div>
 
                 {showSuccess && (
-                    <div className="book-modal__success-message" role="alert" aria-live="assertive">
+                    <div
+                        className="book-modal__success-message"
+                        role="alert"
+                        aria-live="assertive"
+                    >
                         Added to cart!
                     </div>
                 )}

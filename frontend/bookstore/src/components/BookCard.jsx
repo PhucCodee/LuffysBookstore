@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import formatPrice from '../utils/formatPrice';
+import BookCover from './BookCover';
 import '../styles/BookCard.css'
 
 const BookBadge = ({ status }) => {
@@ -33,16 +34,11 @@ const BookCard = ({ book, hideStatus, onBookClick }) => {
             role="button"
             aria-label={`View details for ${book.title} by ${book.author}`}
         >
-            <div className="book-card__cover">
-                <img
-                    className="book-card__cover-image"
-                    src={book.cover || "/bookcovers/placeholder.jpg"}
-                    alt={`${book.title} book cover`}
-                    onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = "/bookcovers/placeholder.jpg";
-                    }}
-                    loading="lazy"
+            <div className="book-card__cover-wrapper">
+                <BookCover
+                    book={book}
+                    className="book-card__cover"
+                    size="custom"
                 />
                 {!hideStatus && <BookBadge status={book.bookStatus} />}
             </div>

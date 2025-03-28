@@ -1,0 +1,104 @@
+.book-cover {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #f8f8f8;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.book-cover__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Size variants */
+.book-cover--small {
+    width: 60px;
+    height: 90px;
+}
+
+.book-cover--medium {
+    width: 80px;
+    height: 120px;
+}
+
+.book-cover--large {
+    flex: 0 0 280px;
+    height: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.book-cover--custom {
+    width: 100%;
+    height: 100%;
+}
+
+.book-modal__book-cover {
+    align-self: flex-start;
+}
+
+.cart-item__book-cover {
+    margin-right: 15px;
+}
+
+.book-card__cover {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Hover effects */
+.book-cover:hover .book-cover__image {
+    transform: scale(1.05);
+}
+
+.book-cover--large:hover .book-cover__image {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .book-cover--large {
+        flex: none;
+        width: 200px;
+        height: 300px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .book-cover--large {
+        width: 160px;
+        height: 240px;
+    }
+
+    .book-cover--medium {
+        width: 70px;
+        height: 105px;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-cover--large {
+        width: 140px;
+        height: 210px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .book-cover,
+    .book-cover__image {
+        transition: none;
+    }
+
+    .book-cover:hover .book-cover__image {
+        transform: none;
+    }
+}

@@ -1,21 +1,7 @@
 import React from "react";
 import formatPrice from "../utils/formatPrice";
+import BookCover from "./BookCover";
 import "../styles/CartBookItem.css";
-
-const BookCover = ({ book }) => (
-    <div className="cart-item__cover">
-        <img
-            className="cart-item__cover-image"
-            src={book.cover || book.coverImageUrl || "/bookcovers/placeholder.jpg"}
-            alt={`Cover of ${book.title}`}
-            onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "/bookcovers/placeholder.jpg";
-            }}
-            loading="lazy"
-        />
-    </div>
-);
 
 const BookDetails = ({ book }) => (
     <div className="cart-item__info">
@@ -60,14 +46,16 @@ const QuantityControl = ({ quantity, onQuantityChange }) => (
 const ItemSubtotal = ({ price, quantity }) => (
     <div className="cart-item__subtotal">
         <span className="cart-item__subtotal-label">Subtotal:</span>
-        <span className="cart-item__subtotal-value">{formatPrice(price * quantity)}</span>
+        <span className="cart-item__subtotal-value">
+            {formatPrice(price * quantity)}
+        </span>
     </div>
 );
 
 const CartBookItem = ({ book, quantity, onQuantityChange, onRemove }) => {
     return (
         <div className="cart-item">
-            <BookCover book={book} />
+            <BookCover book={book} className="cart-item__book-cover" size="medium" />
             <BookDetails book={book} />
 
             <div className="cart-item__actions">

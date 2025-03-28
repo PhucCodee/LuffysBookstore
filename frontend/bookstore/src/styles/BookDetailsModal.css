@@ -100,26 +100,6 @@
     gap: 40px;
 }
 
-.book-modal__cover {
-    flex: 0 0 280px;
-    transition: transform 0.3s ease;
-}
-
-.book-modal__cover img {
-    width: 100%;
-    height: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.book-modal__cover:hover img {
-    transform: scale(1.02);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-}
-
 .book-modal__info {
     flex: 1;
     display: flex;
@@ -186,11 +166,11 @@
 }
 
 .book-modal__description-container {
-    margin: 20px 0;
     padding: 15px;
     background-color: #f8f9fa;
     border-radius: 8px;
     border-left: 4px solid #3498db;
+    margin-top: 10px;
 }
 
 .book-modal__description-title {
@@ -227,7 +207,6 @@
     align-items: center;
     width: 100%;
     justify-content: center;
-    margin-bottom: 8px;
 }
 
 .book-modal__quantity-btn {
