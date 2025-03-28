@@ -23,7 +23,10 @@ const SearchFilters = ({
     };
 
     const handleGenreChange = (e) => {
-        if (onGenreChange) onGenreChange(e);
+        if (onGenreChange) {
+            const newGenre = e;
+            onGenreChange(newGenre === 'all' ? '' : newGenre);
+        }
     };
 
     const toggleMobileFilters = () => {
@@ -31,17 +34,17 @@ const SearchFilters = ({
     };
 
     return (
-        <div className="search-filters-wrapper">
-            <div className="search-filters-header">
-                <div className="results-count"></div>
+        <div className="filters">
+            <div className="filters__header">
+                <div className="filters__count"></div>
 
                 <button
-                    className="mobile-toggle-filters"
+                    className="filters__toggle"
                     onClick={toggleMobileFilters}
                     aria-expanded={mobileExpanded}
                     aria-controls="filter-controls"
                 >
-                    <span>Filters & Sort</span>
+                    <span className="filters__toggle-text">Filters & Sort</span>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -52,7 +55,7 @@ const SearchFilters = ({
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className={`filter-toggle-icon ${mobileExpanded ? "expanded" : ""}`}
+                        className={`filters__toggle-icon ${mobileExpanded ? "filters__toggle-icon--expanded" : ""}`}
                         aria-hidden="true"
                     >
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -62,18 +65,18 @@ const SearchFilters = ({
 
             <div
                 id="filter-controls"
-                className={`search-filters ${mobileExpanded ? "expanded" : ""}`}
+                className={`filters__controls ${mobileExpanded ? "filters__controls--expanded" : ""}`}
                 role="group"
                 aria-label="Filter and sort options"
             >
-                <div className="filter-group">
-                    <label htmlFor="sort-select">Sort by:</label>
-                    <div className="select-wrapper">
+                <div className="filters__group">
+                    <label htmlFor="sort-select" className="filters__label">Sort by:</label>
+                    <div className="filters__select-wrapper">
                         <select
                             id="sort-select"
                             value={sortBy}
                             onChange={handleSortChange}
-                            className="filter-select"
+                            className="filters__select"
                             aria-label="Sort results by"
                             disabled={isLoading}
                         >
@@ -83,18 +86,18 @@ const SearchFilters = ({
                             <option value="price,desc">Price (High to Low)</option>
                             <option value="author">Author (A-Z)</option>
                         </select>
-                        <div className="select-arrow" aria-hidden="true"></div>
+                        <div className="filters__select-arrow" aria-hidden="true"></div>
                     </div>
                 </div>
 
-                <div className="filter-group">
-                    <label htmlFor="status-filter">Status:</label>
-                    <div className="select-wrapper">
+                <div className="filters__group">
+                    <label htmlFor="status-filter" className="filters__label">Status:</label>
+                    <div className="filters__select-wrapper">
                         <select
                             id="status-filter"
                             value={filterStatus}
                             onChange={handleStatusChange}
-                            className="filter-select"
+                            className="filters__select"
                             aria-label="Filter by availability status"
                             disabled={isLoading}
                         >
@@ -103,18 +106,18 @@ const SearchFilters = ({
                             <option value="upcoming">Coming Soon</option>
                             <option value="out_of_stock">Out of Stock</option>
                         </select>
-                        <div className="select-arrow" aria-hidden="true"></div>
+                        <div className="filters__select-arrow" aria-hidden="true"></div>
                     </div>
                 </div>
 
-                <div className="filter-group">
-                    <label htmlFor="genre-filter">Genre:</label>
-                    <div className="select-wrapper">
+                <div className="filters__group">
+                    <label htmlFor="genre-filter" className="filters__label">Genre:</label>
+                    <div className="filters__select-wrapper">
                         <select
                             id="genre-filter"
-                            value={selectedGenre}
+                            value={selectedGenre || 'all'}
                             onChange={handleGenreChange}
-                            className="filter-select"
+                            className="filters__select"
                             aria-label="Filter by book genre"
                             disabled={isLoading || !genres.length}
                         >
@@ -125,30 +128,12 @@ const SearchFilters = ({
                                 </option>
                             ))}
                         </select>
-                        <div className="select-arrow" aria-hidden="true"></div>
+                        <div className="filters__select-arrow" aria-hidden="true"></div>
                     </div>
                 </div>
             </div>
         </div>
     );
-};
-
-SearchFilters.propTypes = {
-    sortBy: PropTypes.string.isRequired,
-    onSortChange: PropTypes.func.isRequired,
-    filterStatus: PropTypes.string.isRequired,
-    onStatusChange: PropTypes.func.isRequired,
-    selectedGenre: PropTypes.string.isRequired,
-    onGenreChange: PropTypes.func.isRequired,
-    genres: PropTypes.array,
-    resultsCount: PropTypes.number,
-    isLoading: PropTypes.bool,
-};
-
-SearchFilters.defaultProps = {
-    genres: [],
-    resultsCount: 0,
-    isLoading: false,
 };
 
 export default SearchFilters;

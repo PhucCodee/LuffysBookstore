@@ -3,17 +3,17 @@ import PaymentMethodSelector from './PaymentMethodSelector';
 import '../styles/ShippingForm.css';
 
 const FormInput = ({ label, name, type = 'text', value, onChange, error }) => (
-    <div className="form-group full-width">
-        <label htmlFor={name}>{label} *</label>
+    <div className="shipping-form__group shipping-form__group--full">
+        <label className="shipping-form__label" htmlFor={name}>{label} *</label>
         <input
             type={type}
             id={name}
             name={name}
             value={value}
             onChange={onChange}
-            className={error ? 'input-error' : ''}
+            className={`shipping-form__input ${error ? 'shipping-form__input--error' : ''}`}
         />
-        {error && <div className="error-message">{error}</div>}
+        {error && <div className="shipping-form__error">{error}</div>}
     </div>
 );
 
@@ -25,10 +25,10 @@ const ShippingForm = ({
     handleBackToCart,
     handleBackToHome
 }) => (
-    <div className="checkout-form">
-        <h2>Shipping Information</h2>
+    <div className="shipping-form">
+        <h2 className="shipping-form__title">Shipping Information</h2>
 
-        <div className="form-row">
+        <div className="shipping-form__row">
             <FormInput
                 label="Delivery Address"
                 name="address"
@@ -43,11 +43,11 @@ const ShippingForm = ({
             onSelect={handlePaymentMethodSelect}
         />
 
-        <div className="navigation-buttons">
-            <button onClick={handleBackToCart} className="back-to-cart-btn">
+        <div className="shipping-form__navigation">
+            <button onClick={handleBackToCart} className="shipping-form__button shipping-form__button--back">
                 ← Back to Cart
             </button>
-            <button onClick={handleBackToHome} className="back-to-home-btn">
+            <button onClick={handleBackToHome} className="shipping-form__button shipping-form__button--home">
                 ← Back to Home
             </button>
         </div>

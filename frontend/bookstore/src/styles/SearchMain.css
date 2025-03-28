@@ -1,17 +1,21 @@
-.search-main {
+.search {
     min-height: 60vh;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-@media (max-width: 768px) {
-    .search-main .container {
-        padding: 15px;
-    }
+.search__container {
+    width: 100%;
 }
 
-.sr-only-loading-state {
+.search__pagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.search__sr-only {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -23,8 +27,8 @@
     border-width: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .search-main * {
-        transition: none !important;
+@media (max-width: 768px) {
+    .search {
+        padding: 15px;
     }
 }

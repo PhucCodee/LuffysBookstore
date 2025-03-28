@@ -9,7 +9,7 @@ const SearchMain = ({ searchQuery }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortBy, setSortBy] = useState("title");
     const [filterStatus, setFilterStatus] = useState("all");
-    const [selectedGenre, setSelectedGenre] = useState("all");
+    const [selectedGenre, setSelectedGenre] = useState("");
 
     const { availableGenres } = useBooks();
     const {
@@ -62,8 +62,8 @@ const SearchMain = ({ searchQuery }) => {
     };
 
     return (
-        <main className="search-main">
-            <div className="container">
+        <main className="search">
+            <div className="search__container">
                 <SearchFilters
                     sortBy={sortBy}
                     onSortChange={handleSortChange}
@@ -85,11 +85,13 @@ const SearchMain = ({ searchQuery }) => {
                 />
 
                 {searchResults?.length > 0 && totalPages > 1 && (
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
+                    <div className="search__pagination">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                        />
+                    </div>
                 )}
             </div>
         </main>

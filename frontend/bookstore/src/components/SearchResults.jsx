@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import BookCard from './BookCard';
 import BookDetailsModal from './BookDetailsModal';
+import { LoadingSpinner, ErrorMessage, EmptyState } from './LoadingStates';
 import useBookPresentation from '../hooks/useBookPresentation'
 import '../styles/SearchResults.css';
 
 const SearchHeader = ({ loading, error, books, searchQuery, totalCount, showCount = false }) => (
-    <div className="search-header">
-        <h1>Search Results</h1>
-        <p className="search-info" aria-live="polite">
+    <div className="search__header">
+        <h1 className="search__title">Search Results</h1>
+        <p className="search__info" aria-live="polite">
             {loading ? 'Searching...' :
                 error ? `Error: ${error}` :
                     books.length === 0 ? 'No results found' :
@@ -20,32 +21,34 @@ const SearchHeader = ({ loading, error, books, searchQuery, totalCount, showCoun
     </div>
 );
 
-const LoadingState = () => (
-    <div className="loading-container" role="status" aria-live="polite">
-        <div className="loading-spinner" aria-hidden="true"></div>
-        <p>Searching for books...</p>
-        <span className="sr-only">Loading search results</span>
-    </div>
+const CustomLoadingState = () => (
+    <LoadingSpinner
+        message="Searching for books..."
+        size="large"
+        className="search__loading"
+    />
 );
 
-const ErrorState = ({ error }) => (
-    <div className="error-message" role="alert">
-        <div className="error-icon" aria-hidden="true">!</div>
-        <h2>Something went wrong</h2>
-        <p>{error}</p>
-        <p>Please try again later or refine your search.</p>
-    </div>
+const CustomErrorState = ({ error }) => (
+    <ErrorMessage
+        message="Something went wrong"
+        details={`${error}. Please try again later or refine your search.`}
+        isMainError={true}
+        className="search__error"
+    />
 );
 
-const EmptyState = ({ searchQuery }) => (
-    <div className="no-results">
-        <div className="empty-icon" aria-hidden="true">🔍</div>
-        <h2>No books found</h2>
-        <p>We couldn't find any books matching "{searchQuery}".</p>
-        <ul className="search-suggestions">
-            <li>Check for typos or try different keywords</li>
-            <li>Use more general terms</li>
-            <li>Try adjusting the filters</li>
+const CustomEmptyState = ({ searchQuery }) => (
+    <div className="search__empty">
+        <EmptyState
+            message={`We couldn't find any books matching "${searchQuery}".`}
+            icon="🔍"
+            className="search__empty-state"
+        />
+        <ul className="search__suggestions">
+            <li className="search__suggestion-item">Check for typos or try different keywords</li>
+            <li className="search__suggestion-item">Use more general terms</li>
+            <li className="search__suggestion-item">Try adjusting the filters</li>
         </ul>
     </div>
 );
@@ -56,12 +59,12 @@ const BookGrid = ({ books, onBookClick, totalCount }) => {
     return (
         <>
             <div
-                className="search-results-grid"
+                className="search__grid"
                 role="list"
                 aria-label="Search results"
             >
                 {books.map(book => (
-                    <div role="listitem" key={book.bookId} className="book-grid-item">
+                    <div role="listitem" key={book.bookId} className="search__grid-item">
                         <BookCard
                             book={book}
                             onBookClick={onBookClick}
@@ -71,8 +74,8 @@ const BookGrid = ({ books, onBookClick, totalCount }) => {
             </div>
 
             {hasMoreResults && (
-                <div className="search-results-info">
-                    <p>
+                <div className="search__pagination-info">
+                    <p className="search__results-count">
                         Showing {books.length} of {totalCount} results
                     </p>
                     {/* Pagination controls would go here if implemented */}
@@ -95,11 +98,11 @@ const SearchResults = ({ books, loading, error, searchQuery, totalCount }) => {
     const renderContent = () => {
         switch (content.type) {
             case 'loading':
-                return <LoadingState />;
+                return <CustomLoadingState />;
             case 'error':
-                return <ErrorState error={content.error} />;
+                return <CustomErrorState error={content.error} />;
             case 'empty':
-                return <EmptyState searchQuery={content.searchQuery} />;
+                return <CustomEmptyState searchQuery={content.searchQuery} />;
             case 'results':
                 return (
                     <BookGrid
@@ -114,7 +117,7 @@ const SearchResults = ({ books, loading, error, searchQuery, totalCount }) => {
     };
 
     return (
-        <section className="search-results-container" aria-label="Search results">
+        <section className="search" aria-label="Search results">
             <SearchHeader
                 {...headerInfo}
                 showCount={true}
