@@ -16,7 +16,6 @@ const orderService = {
         });
 
         if (!response.ok) {
-            // Get more detailed error information
             let errorMessage = `Failed to create order: ${response.status}`;
 
             try {
@@ -27,7 +26,6 @@ const orderService = {
                     errorMessage += ` - ${errorData.error}`;
                 }
             } catch (e) {
-                // If we can't parse JSON, try to get text
                 try {
                     const errorText = await response.text();
                     console.error('Error text:', errorText);

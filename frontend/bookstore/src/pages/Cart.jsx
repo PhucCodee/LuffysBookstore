@@ -1,41 +1,48 @@
-import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import CartBookItem from '../components/CartBookItem';
-import useCartState from '../hooks/useCartState';
-import useContentRenderer from '../hooks/useContentRenderer';
-import formatPrice from '../utils/formatPrice';
-import '../styles/Cart.css';
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CartBookItem from "../components/CartBookItem";
+import EmptyState from "../components/EmptyState";
+import useCartState from "../hooks/useCartState";
+import useContentRenderer from "../hooks/useContentRenderer";
+import formatPrice from "../utils/formatPrice";
+import "../styles/Cart.css";
 
-const CartSummary = ({ subtotal, tax, total, hasOutOfStock, onCheckout, onContinueShopping }) => (
-    <div className="cart-summary">
-        <h2>Order Summary</h2>
-        <div className="summary-row">
-            <span>Subtotal</span>
-            <span>{formatPrice(subtotal)}</span>
+const CartSummary = ({
+    subtotal,
+    tax,
+    total,
+    hasOutOfStock,
+    onCheckout,
+    onContinueShopping,
+}) => (
+    <div className="cart__summary">
+        <h2 className="cart__summary-title">Order Summary</h2>
+        <div className="cart__summary-row">
+            <span className="cart__summary-label">Subtotal</span>
+            <span className="cart__summary-value">{formatPrice(subtotal)}</span>
         </div>
-        <div className="summary-row">
-            <span>Shipping</span>
-            <span className="shipping-estimate">Calculated at checkout</span>
+        <div className="cart__summary-row">
+            <span className="cart__summary-label">Shipping</span>
+            <span className="cart__summary-value cart__summary-value--estimate">
+                Calculated at checkout
+            </span>
         </div>
-        <div className="summary-row">
-            <span>Estimated Tax</span>
-            <span>{formatPrice(tax)}</span>
+        <div className="cart__summary-row">
+            <span className="cart__summary-label">Estimated Tax</span>
+            <span className="cart__summary-value">{formatPrice(tax)}</span>
         </div>
-        <div className="summary-row total">
-            <span>Estimated Total</span>
-            <span>{formatPrice(total)}</span>
+        <div className="cart__summary-row cart__summary-row--total">
+            <span className="cart__summary-label">Estimated Total</span>
+            <span className="cart__summary-value">{formatPrice(total)}</span>
         </div>
 
-        <div className="cart-actions">
-            <button
-                onClick={onContinueShopping}
-                className="button-secondary"
-            >
+        <div className="cart__actions">
+            <button onClick={onContinueShopping} className="cart__button cart__button--secondary">
                 Continue Shopping
             </button>
             <button
                 onClick={onCheckout}
-                className="button-primary"
+                className="cart__button cart__button--primary"
                 disabled={hasOutOfStock}
             >
                 Proceed to Checkout
@@ -43,21 +50,11 @@ const CartSummary = ({ subtotal, tax, total, hasOutOfStock, onCheckout, onContin
         </div>
 
         {hasOutOfStock && (
-            <p className="checkout-warning">
-                Some items in your cart are out of stock. Please remove them before proceeding to checkout.
+            <p className="cart__warning">
+                Some items in your cart are out of stock. Please remove them before
+                proceeding to checkout.
             </p>
         )}
-    </div>
-);
-
-const EmptyCart = ({ onContinueShopping }) => (
-    <div className="empty-cart">
-        <div className="empty-cart-icon">🛒</div>
-        <h2>Your cart is empty</h2>
-        <p>Looks like you haven't added any books to your cart yet.</p>
-        <button onClick={onContinueShopping} className="button-primary">
-            Browse Books
-        </button>
     </div>
 );
 
@@ -80,7 +77,7 @@ const Cart = () => {
         let subtotal = 0;
         let itemCount = 0;
 
-        cartItems.forEach(item => {
+        cartItems.forEach((item) => {
             subtotal += item.book.price * item.quantity;
             itemCount += item.quantity;
         });
@@ -92,41 +89,43 @@ const Cart = () => {
             subtotal,
             tax,
             total,
-            itemCount
+            itemCount,
         };
     }, [cartItems]);
 
     const isCartEmpty = !isLoading && cartItems.length === 0;
-    const hasOutOfStockItems = cartItems.some(item => item.book.bookStatus === 'out_of_stock');
+    const hasOutOfStockItems = cartItems.some(
+        (item) => item.book.bookStatus === "out_of_stock"
+    );
 
     const handleContinueShopping = () => {
-        navigate('/');
+        navigate("/");
     };
 
     const handleCheckout = () => {
-        navigate('/checkout');
+        navigate("/checkout");
     };
 
     const handleQuantityChange = async (itemId, newQuantity) => {
         if (newQuantity < 1) return;
 
-        setUpdatingItems(prev => ({ ...prev, [itemId]: true }));
-        setItemErrors(prev => ({ ...prev, [itemId]: null }));
+        setUpdatingItems((prev) => ({ ...prev, [itemId]: true }));
+        setItemErrors((prev) => ({ ...prev, [itemId]: null }));
 
         try {
             await updateCartItemQuantity(itemId, newQuantity);
         } catch (err) {
-            setItemErrors(prev => ({
+            setItemErrors((prev) => ({
                 ...prev,
-                [itemId]: "Failed to update quantity. Please try again."
+                [itemId]: "Failed to update quantity. Please try again.",
             }));
         } finally {
-            setUpdatingItems(prev => ({ ...prev, [itemId]: false }));
+            setUpdatingItems((prev) => ({ ...prev, [itemId]: false }));
         }
     };
 
     const handleRemoveItem = async (itemId) => {
-        setUpdatingItems(prev => ({ ...prev, [itemId]: true }));
+        setUpdatingItems((prev) => ({ ...prev, [itemId]: true }));
 
         try {
             await removeFromCart(itemId);
@@ -137,13 +136,15 @@ const Cart = () => {
 
     const cartContent = (
         <>
-            <div className="cart-items">
-                {cartItems.map(item => (
+            <div className="cart__items">
+                {cartItems.map((item) => (
                     <CartBookItem
                         key={item.cartItemId}
                         book={item.book}
                         quantity={item.quantity}
-                        onQuantityChange={(qty) => handleQuantityChange(item.cartItemId, qty)}
+                        onQuantityChange={(qty) =>
+                            handleQuantityChange(item.cartItemId, qty)
+                        }
                         onRemove={() => handleRemoveItem(item.cartItemId)}
                         isUpdating={updatingItems[item.cartItemId]}
                         error={itemErrors[item.cartItemId]}
@@ -163,15 +164,32 @@ const Cart = () => {
     );
 
     return (
-        <div className="cart-container">
-            <h1>Your Shopping Cart {!isCartEmpty && `(${itemCount} ${itemCount === 1 ? 'item' : 'items'})`}</h1>
+        <div className="cart">
+            <h1 className="cart__title">
+                Your Shopping Cart{" "}
+                {!isCartEmpty && (
+                    <span className="cart__count">
+                        ({itemCount} {itemCount === 1 ? "item" : "items"})
+                    </span>
+                )}
+            </h1>
 
             {renderContent({
                 isLoading,
                 error,
-                content: isCartEmpty
-                    ? <EmptyCart onContinueShopping={handleContinueShopping} />
-                    : cartContent
+                content: isCartEmpty ? (
+                    <EmptyState
+                        variant="cart"
+                        icon="🛒"
+                        title="Your cart is empty"
+                        message="Looks like you haven't added any books to your cart yet."
+                        buttonText="Browse Books"
+                        onButtonClick={handleContinueShopping}
+                        className="cart__empty"
+                    />
+                ) : (
+                    cartContent
+                ),
             })}
         </div>
     );

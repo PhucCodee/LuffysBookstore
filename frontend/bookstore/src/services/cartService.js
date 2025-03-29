@@ -18,7 +18,6 @@ export const createCart = async (customerId = 1) => {
 
     const cart = await response.json();
 
-    // Store the cart ID in localStorage for future use
     if (cart && cart.cartId) {
         localStorage.setItem('cartId', cart.cartId.toString());
         console.log('New cart created and ID stored:', cart.cartId);
@@ -91,7 +90,6 @@ export const removeCartItem = async (cartId, itemId) => {
     return true;
 };
 
-// Add the missing clearCart function
 export const clearCart = async (cartId) => {
     if (!cartId) {
         cartId = localStorage.getItem('cartId');
@@ -103,7 +101,6 @@ export const clearCart = async (cartId) => {
 
     console.log(`Clearing cart ${cartId}`);
 
-    // DELETE all items from the cart
     const response = await fetch(`${API_BASE_URL}/carts/${cartId}/items`, {
         method: 'DELETE'
     });

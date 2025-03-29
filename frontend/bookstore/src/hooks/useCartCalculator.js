@@ -1,16 +1,14 @@
 import { useMemo } from 'react';
 
-const useCartTotals = (cartItems, options = {}) => {
+const useCartCalculator = (cartItems = [], options = {}) => {
     const {
-        taxRate = 0.07,
-        shippingFee = 5.99,
+        taxRate = 0.05,
+        shippingFee = 0,
         freeShippingThreshold = 0
     } = options;
 
-    const totals = useMemo(() => {
-        let subtotal = 0;
-        let itemCount = 0;
-
+    return useMemo(() => {
+        // Return zeros if cart is empty
         if (!cartItems || cartItems.length === 0) {
             return {
                 subtotal: 0,
@@ -22,24 +20,28 @@ const useCartTotals = (cartItems, options = {}) => {
             };
         }
 
+        // Calculate basic totals
+        let subtotal = 0;
+        let itemCount = 0;
         let hasOutOfStock = false;
 
         cartItems.forEach(item => {
             subtotal += item.book.price * item.quantity;
             itemCount += item.quantity;
 
+            // Check if any item is out of stock
             if (item.book.bookStatus === 'out_of_stock') {
                 hasOutOfStock = true;
             }
         });
 
-        // Calculate shipping - free if above threshold
-        const shipping = subtotal > freeShippingThreshold ? shippingFee : 0;
+        // Calculate shipping - free if above threshold or if threshold is 0
+        const shipping = (freeShippingThreshold > 0 && subtotal < freeShippingThreshold)
+            ? shippingFee
+            : 0;
 
-        // Calculate tax
         const tax = subtotal * taxRate;
 
-        // Calculate total
         const total = subtotal + shipping + tax;
 
         return {
@@ -51,8 +53,6 @@ const useCartTotals = (cartItems, options = {}) => {
             hasOutOfStock
         };
     }, [cartItems, taxRate, shippingFee, freeShippingThreshold]);
-
-    return totals;
 };
 
-export default useCartTotals;
+export default useCartCalculator;
