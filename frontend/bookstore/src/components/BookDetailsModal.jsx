@@ -46,7 +46,7 @@ const CartControls = ({
     <div className="book-modal__cart-controls">
         <div className="book-modal__quantity-control">
             <button
-                className="book-modal__quantity-btn book-modal__quantity-btn--minus"
+                className="book-modal__quantity-btn book-modal__quantity-btn--decrease"
                 onClick={onDecrease}
                 disabled={quantity <= 0 || !isAvailable || loading}
                 aria-label="Decrease quantity"
@@ -64,7 +64,7 @@ const CartControls = ({
                 aria-label="Quantity"
             />
             <button
-                className="book-modal__quantity-btn book-modal__quantity-btn--plus"
+                className="book-modal__quantity-btn book-modal__quantity-btn--increase"
                 onClick={onIncrease}
                 disabled={!isAvailable || quantity >= maxStock || loading}
                 aria-label="Increase quantity"

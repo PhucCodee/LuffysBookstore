@@ -40,15 +40,15 @@ const HomeMain = () => {
     });
 
     return (
-        <main className="home-main">
-            <div className="featured-banner" role="banner">
-                <h1>Welcome to Luffy's Bookstore</h1>
-                <p>Discover your next favorite read</p>
+        <main className="home">
+            <div className="home__banner" role="banner">
+                <h1 className="home__title">Welcome to Luffy's Bookstore</h1>
+                <p className="home__subtitle">Discover your next favorite read</p>
             </div>
 
-            <div className="book-rows">
+            <div className="home__content">
                 {/* Coming Soon section */}
-                <section aria-labelledby="upcoming-books-title">
+                <section className="home__section" aria-labelledby="upcoming-books-title">
                     <BookRow
                         title="Coming Soon"
                         books={upcomingBooks}

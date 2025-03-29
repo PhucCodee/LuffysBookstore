@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import logo from "../assets/logo.png";
 import cartIcon from "../assets/cart.png";
@@ -34,61 +34,61 @@ const NavBar = ({ onSearch }) => {
 
     return (
         <nav className="navbar" aria-label="Main navigation">
-            <div className="navbar-container">
+            <div className="navbar__container">
                 {/* Logo section */}
-                <div className="navbar-logo">
+                <div className="navbar__logo">
                     <Link to="/" aria-label="Home page">
                         <img
                             src={logo}
                             alt="Luffy's Bookstore Logo"
-                            className="logo-image"
+                            className="navbar__logo-img"
                         />
                     </Link>
                 </div>
 
                 {/* Search section */}
-                <div className="search-container">
-                    <form onSubmit={handleSearchSubmit}>
+                <div className="navbar__search">
+                    <form onSubmit={handleSearchSubmit} className="navbar__search-form">
                         <input
                             ref={searchInputRef}
                             type="text"
                             placeholder="Search for books..."
                             value={searchQuery}
                             onChange={handleSearchChange}
-                            className="search-input"
+                            className="navbar__search-input"
                             aria-label="Search for books"
                         />
                         <button
                             type="submit"
-                            className="search-button"
+                            className="navbar__search-button"
                             aria-label="Submit search"
                         >
                             <img
                                 src={searchIcon}
                                 alt=""
                                 aria-hidden="true"
-                                className="search-icon"
+                                className="navbar__search-icon"
                             />
                         </button>
                     </form>
                 </div>
 
                 {/* Icons section */}
-                <div className="navbar-actions">
+                <div className="navbar__actions">
                     <Link
                         to="/cart"
-                        className="navbar-icon-link cart-icon-container"
+                        className="navbar__action-link navbar__cart-link"
                         aria-label={`Shopping cart with ${cartCount} items`}
                     >
                         <img
                             src={cartIcon}
                             alt=""
                             aria-hidden="true"
-                            className="navbar-icon"
+                            className="navbar__action-icon"
                         />
                         {cartCount > 0 && (
                             <span
-                                className={`cart-count ${cartCount > 9 ? "large" : ""}`}
+                                className={`navbar__cart-count ${cartCount > 9 ? "navbar__cart-count--large" : ""}`}
                                 aria-hidden="true"
                             >
                                 {cartCount}
@@ -97,14 +97,14 @@ const NavBar = ({ onSearch }) => {
                     </Link>
                     <Link
                         to="/profile"
-                        className="navbar-icon-link"
+                        className="navbar__action-link"
                         aria-label="User profile"
                     >
                         <img
                             src={profileIcon}
                             alt=""
                             aria-hidden="true"
-                            className="navbar-icon"
+                            className="navbar__action-icon"
                         />
                     </Link>
                 </div>

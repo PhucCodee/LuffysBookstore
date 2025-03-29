@@ -1,4 +1,4 @@
-.order-success-overlay {
+.order-success__overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,11 +12,11 @@
     transition: opacity 0.3s ease;
 }
 
-.order-success-overlay.fade-out {
+.order-success__overlay--fade-out {
     opacity: 0;
 }
 
-.order-success-modal {
+.order-success__modal {
     background-color: white;
     border-radius: 10px;
     padding: 40px;
@@ -27,7 +27,7 @@
     position: relative;
 }
 
-.success-icon {
+.order-success__icon {
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -43,21 +43,20 @@
     box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
 }
 
-.order-success-modal h2 {
+.order-success__title {
     margin: 0 0 15px 0;
     color: #333;
     font-size: 24px;
     font-weight: 700;
 }
 
-.order-success-modal p {
+.order-success__text {
     margin: 0 0 25px 0;
     color: #666;
     font-size: 16px;
 }
 
-/* Success message that flies in from the top */
-.success-message {
+.order-success__message {
     background-color: #2ecc71;
     background-image: linear-gradient(to right, #2ecc71, #27ae60);
     color: white;
@@ -66,13 +65,14 @@
     font-size: 16px;
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
-    animation: fadeInOut 2s ease;
     text-align: center;
-    width: calc(100% - 40px);
-    margin: 0 auto;
     position: absolute;
-    left: 20px;
+    left: 50%;
     bottom: -30px;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 360px;
+    opacity: 1;
 }
 
 /* Animations */
@@ -105,65 +105,28 @@
     }
 }
 
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    15% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    85% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
-
 /* Responsive adjustments */
 @media (max-width: 576px) {
-    .order-success-modal {
+    .order-success__modal {
         padding: 30px 20px;
     }
 
-    .success-icon {
+    .order-success__icon {
         width: 60px;
         height: 60px;
         font-size: 30px;
     }
 
-    .order-success-modal h2 {
+    .order-success__title {
         font-size: 20px;
     }
 
-    .order-success-modal p {
+    .order-success__text {
         font-size: 14px;
     }
 
-    .success-message {
+    .order-success__message {
         font-size: 14px;
         padding: 10px 15px;
-    }
-}
-
-/* Accessibility preferences */
-@media (prefers-reduced-motion: reduce) {
-
-    .order-success-modal,
-    .success-icon,
-    .success-message {
-        animation: none;
-        transition: none;
-    }
-
-    .order-success-overlay.fade-out {
-        transition: none;
     }
 }

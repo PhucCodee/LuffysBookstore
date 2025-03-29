@@ -6,14 +6,14 @@
     font-display: swap;
 }
 
-.home-main {
+.home {
     max-width: 1200px;
     margin: 0 auto;
     min-height: 50vh;
     animation: fadeIn 0.5s ease-in;
 }
 
-.featured-banner {
+.home__banner {
     background-color: #f8f5f2;
     background-image: linear-gradient(135deg, #f8f5f2 0%, #e8e4e0 100%);
     padding: 40px 20px;
@@ -27,7 +27,7 @@
     overflow: hidden;
 }
 
-.featured-banner h1 {
+.home__title {
     margin: 0 0 12px;
     color: #2c3e50;
     font-size: 32px;
@@ -37,18 +37,22 @@
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
-.featured-banner p {
+.home__subtitle {
     margin: 0;
     color: #5d6d7e;
     font-size: 18px;
     font-weight: 400;
 }
 
-.book-rows {
+.home__content {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 40px;
+}
+
+.home__section {
+    margin-bottom: 20px;
 }
 
 @keyframes fadeIn {
@@ -63,60 +67,40 @@
     }
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .featured-banner {
+    .home__banner {
         padding: 30px 15px;
     }
 
-    .featured-banner h1 {
+    .home__title {
         font-size: 28px;
     }
 
-    .featured-banner p {
+    .home__subtitle {
         font-size: 16px;
     }
 
-    .book-rows {
+    .home__content {
         gap: 25px;
     }
 }
 
 @media (max-width: 576px) {
-    .home-main {
+    .home {
         padding: 15px;
     }
 
-    .featured-banner {
+    .home__banner {
         padding: 20px 10px;
         margin-bottom: 20px;
     }
 
-    .featured-banner h1 {
+    .home__title {
         font-size: 24px;
     }
 
-    .book-rows {
+    .home__content {
         gap: 20px;
-    }
-}
-
-@media print {
-    .featured-banner {
-        background: none !important;
-        color: black !important;
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-    }
-
-    .featured-banner h1,
-    .featured-banner p {
-        color: black !important;
-        text-shadow: none !important;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .home-main {
-        animation: none;
     }
 }

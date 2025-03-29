@@ -207,17 +207,3 @@
     justify-content: flex-end;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-
-  .cart-item,
-  .cart-item__cover-image,
-  .cart-item__quantity-btn,
-  .cart-item__remove-btn {
-    transition: none;
-  }
-
-  .cart-item:hover .cart-item__cover-image {
-    transform: none;
-  }
-}
