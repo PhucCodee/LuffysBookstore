@@ -29,7 +29,7 @@ function App() {
 const Profile = () => (
   <div className="page-container">
     <h1>User Profile Page</h1>
-    <p>Your profile information will appear here</p>
+    <p>This is for further development</p>
   </div>
 );
 

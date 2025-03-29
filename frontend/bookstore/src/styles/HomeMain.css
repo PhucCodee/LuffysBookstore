@@ -52,7 +52,7 @@
 }
 
 .home__section {
-    margin-bottom: 20px;
+    margin: 0;
 }
 
 @keyframes fadeIn {

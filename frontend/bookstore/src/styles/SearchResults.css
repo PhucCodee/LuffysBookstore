@@ -39,7 +39,7 @@
 }
 
 .search__error {
-    margin: 2rem 0;
+    width: 100%;
 }
 
 .search__empty {

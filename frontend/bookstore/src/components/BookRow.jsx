@@ -42,24 +42,6 @@ const ArrowRightIcon = () => (
     </svg>
 );
 
-const CustomLoadingState = () => (
-    <LoadingSpinner message="Loading books..." className="book-row__loading" />
-);
-
-const CustomErrorState = () => (
-    <ErrorMessage
-        message="Failed to load books. Please try again later."
-        className="book-row__error"
-    />
-);
-
-const CustomEmptyState = () => (
-    <EmptyState
-        message="No books available in this category"
-        className="book-row__empty"
-    />
-);
-
 const BookRow = ({
     title,
     books = [],
@@ -85,9 +67,24 @@ const BookRow = ({
                 onBookClick={onBookClick}
             />
         ),
-        LoadingState: CustomLoadingState,
-        ErrorState: CustomErrorState,
-        EmptyState: CustomEmptyState,
+        LoadingState: () => (
+            <LoadingSpinner
+                message="Loading books..."
+                className="book-row__loading"
+            />
+        ),
+        ErrorState: () => (
+            <ErrorMessage
+                message="Failed to load books. Please try again later."
+                className="book-row__error"
+            />
+        ),
+        EmptyState: () => (
+            <EmptyState
+                message="No books available in this category"
+                className="book-row__empty"
+            />
+        ),
     });
 
     return (
