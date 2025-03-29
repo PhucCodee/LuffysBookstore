@@ -1,6 +1,5 @@
-Luffy's Bookstore - Full Stack E-commerce Application
+Luffy's Bookstore - A modern, responsive e-commerce bookstore application built with Spring Boot backend and React frontend.
 <img alt="Luffy's Bookstore Logo" src="/frontend/bookstore/src/assets/logo.png">
-A modern, responsive e-commerce bookstore application built with Spring Boot backend and React frontend.
 
 # Overview
 Luffy's Bookstore is a full-featured e-commerce application for buying books. It includes book browsing, cart management, checkout flow, and order processing.
