@@ -3,16 +3,16 @@ import '../styles/PaymentMethodSelector.css';
 
 const PaymentOption = ({ method, selectedMethod, onSelect }) => (
     <div
-        className={`payment-method-option ${selectedMethod === method.id ? 'selected' : ''}`}
+        className={`payment__option ${selectedMethod === method.id ? 'payment__option--selected' : ''}`}
         onClick={() => onSelect(method.id)}
     >
-        <div className="payment-selector">
-            <div className={`payment-radio ${selectedMethod === method.id ? 'checked' : ''}`}>
-                {selectedMethod === method.id && <div className="payment-radio-dot"></div>}
+        <div className="payment__selector">
+            <div className={`payment__radio ${selectedMethod === method.id ? 'payment__radio--checked' : ''}`}>
+                {selectedMethod === method.id && <div className="payment__radio-dot"></div>}
             </div>
-            <div className="payment-method-info">
-                <h4>{method.label}</h4>
-                <p>{method.description}</p>
+            <div className="payment__info">
+                <h4 className="payment__title">{method.label}</h4>
+                <p className="payment__description">{method.description}</p>
             </div>
         </div>
     </div>
@@ -26,8 +26,8 @@ const PaymentMethodSelector = ({ selectedMethod, onSelect }) => {
     ];
 
     return (
-        <div className="payment-method-selector">
-            <h3>Payment Method</h3>
+        <div className="payment">
+            <h3 className="payment__heading">Payment Method</h3>
             {paymentMethods.map(method => (
                 <PaymentOption
                     key={method.id}

@@ -4,19 +4,16 @@ const useAccessibleModal = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const modalRef = useRef(null);
 
-    // Open modal
     const openModal = (item) => {
         setSelectedItem(item);
         document.body.style.overflow = 'hidden';
     };
 
-    // Close modal
     const closeModal = () => {
         setSelectedItem(null);
         document.body.style.overflow = 'auto';
     };
 
-    // Handle escape key
     useEffect(() => {
         const handleEscape = (e) => {
             if (e.key === 'Escape') closeModal();

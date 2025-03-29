@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useCart } from "../context/CartContext";
 import useModalAccessibility from "../hooks/useAccessibleModal";
 import useQuantityControl from "../hooks/useQuantityControl";

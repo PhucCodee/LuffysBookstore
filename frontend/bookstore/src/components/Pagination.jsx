@@ -30,7 +30,7 @@ const Pagination = ({
     const goToNextPage = () => handlePageChange(currentPage + 1);
 
     const Dots = () => (
-        <span className="pagination-dots" aria-hidden="true">
+        <span className="pagination__dots" aria-hidden="true">
             &hellip;
         </span>
     );
@@ -68,14 +68,14 @@ const Pagination = ({
 
     return (
         <nav
-            className={`pagination-container ${className}`}
+            className={`pagination ${className}`}
             aria-label="Pagination Navigation"
         >
-            <div className="pagination">
+            <div className="pagination__container">
                 {/* Previous Button */}
                 <button
                     type="button"
-                    className="pagination-btn prev"
+                    className="pagination__button pagination__button--prev"
                     onClick={goToPreviousPage}
                     disabled={currentPage === 1}
                     aria-label="Go to previous page"
@@ -84,7 +84,7 @@ const Pagination = ({
                 </button>
 
                 {/* Page Numbers */}
-                <div className="page-numbers" role="list">
+                <div className="pagination__numbers" role="list">
                     {paginationRange.map((pageNumber, index) => {
                         if (pageNumber === "LEFT_DOTS" || pageNumber === "RIGHT_DOTS") {
                             return <Dots key={`dots-${index}`} />;
@@ -94,7 +94,7 @@ const Pagination = ({
                             <button
                                 key={pageNumber}
                                 type="button"
-                                className={`pagination-btn page-num ${currentPage === pageNumber ? "active" : ""
+                                className={`pagination__button pagination__button--page ${currentPage === pageNumber ? "pagination__button--active" : ""
                                     }`}
                                 onClick={() => handlePageChange(pageNumber)}
                                 aria-label={`Page ${pageNumber}`}
@@ -109,7 +109,7 @@ const Pagination = ({
                 {/* Next Button */}
                 <button
                     type="button"
-                    className="pagination-btn next"
+                    className="pagination__button pagination__button--next"
                     onClick={goToNextPage}
                     disabled={currentPage === totalPages}
                     aria-label="Go to next page"
@@ -118,8 +118,8 @@ const Pagination = ({
                 </button>
             </div>
 
-            <div className="pagination-info" aria-live="polite">
-                <span className="sr-only">
+            <div className="pagination__info" aria-live="polite">
+                <span className="pagination__sr-only">
                     Page {currentPage} of {totalPages}
                 </span>
             </div>

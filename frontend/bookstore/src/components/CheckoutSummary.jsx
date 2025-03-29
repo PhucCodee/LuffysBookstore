@@ -34,7 +34,7 @@ const CheckoutSummary = ({
 
             <div className="summary__totals">
                 <SummaryRow label="Subtotal" value={subtotal} />
-                {/* <SummaryRow label="Shipping" value={shipping} /> */}
+                <SummaryRow label="Shipping" value={shipping} />
                 <SummaryRow label="Tax" value={tax} />
                 <SummaryRow label="Total" value={total} isTotal={true} />
             </div>
