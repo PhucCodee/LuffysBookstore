@@ -116,7 +116,7 @@ VALUES (
         'https://images-us.bookshop.org/ingram/9780060850524.jpg?width=384&v=v2',
         'Science Fiction',
         'Aldous Huxley',
-        60
+        20
     ),
     (
         "Mickey7",
@@ -136,7 +136,7 @@ VALUES (
         'https://images-us.bookshop.org/ingram/9780593723463.jpg?width=384&v=v2',
         'Science Fiction',
         'Alexander Freed',
-        55
+        50
     ),
     (
         "Murder by Memory",
@@ -146,7 +146,7 @@ VALUES (
         'https://images-us.bookshop.org/ingram/9781250342249.jpg?width=384&v=v2',
         'Science Fiction',
         'Olivia Waite',
-        90
+        10
     ),
     (
         "Dune",
@@ -156,17 +156,17 @@ VALUES (
         'https://images-us.bookshop.org/ingram/9780441172719.jpg?width=384&v=v2',
         'Science Fiction',
         'Frank Herbert',
-        35
+        30
     ),
     (
-        "The Thursday Murder Club",
-        10.99,
+        "You Must Take Part in Revolution",
+        23.99,
         'This is a test!',
-        'upcoming',
-        'https://images-us.bookshop.org/ingram/9781984880987.jpg?width=384&v=v2',
-        'Mystery',
-        'Richard Osman',
-        0
+        'available',
+        'https://images-us.bookshop.org/ingram/9781951491291.jpg?width=384&v=v2',
+        'Science Fiction',
+        'Badiucao',
+        40
     ),
     (
         "The Buffalo Hunter Hunter",
@@ -187,6 +187,16 @@ VALUES (
         'Horror',
         'Christopher Buehlman',
         0
+    ),
+    (
+        "Lucky Day",
+        27.99,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781250398659.jpg?width=384&v=v2',
+        'Horror',
+        'Chuck Tingle',
+        20
     ),
     (
         "The Book of Accidents",
@@ -276,6 +286,26 @@ VALUES (
         'https://images-us.bookshop.org/ingram/9781668023488.jpg?width=384&v=v2',
         'Politics',
         'Derek Thompson',
+        0
+    ),
+    (
+        "Careless People",
+        32.99,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9781250391230.jpg?width=384&v=v2',
+        'Politics',
+        'Sarah Wynn - Williams',
+        0
+    ),
+    (
+        "The River Has Roots",
+        24.99,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9781250341082.jpg?width=384&v=v2',
+        'Fantasy',
+        'Amal El - Mohtar',
         0
     ),
     (
@@ -419,14 +449,94 @@ VALUES (
         30
     ),
     (
-        "You Must Take Part in Revolution",
-        23.99,
+        "The Missing Half",
+        30.00,
         'This is a test!',
         'available',
-        'https://images-us.bookshop.org/ingram/9781951491291.jpg?width=384&v=v2',
-        'Science Fiction',
-        'Badiucao',
+        'https://images-us.bookshop.org/ingram/9780593726983.jpg?width=384&v=v2',
+        'Mystery',
+        'Ashley Flowers',
+        10
+    ),
+    (
+        "Murdle: Volume 1",
+        16.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781250892317.jpg?width=384&v=v2',
+        'Mystery',
+        'G.T.Karber',
+        20
+    ),
+    (
+        "The London Séance Society",
+        30.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780778387114.jpg?width=384&v=v2',
+        'Mystery',
+        'Sarah Penner',
+        30
+    ),
+    (
+        "A Drop of Corruption",
+        30.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780593723821.jpg?width=384&v=v2',
+        'Mystery',
+        'Robert Jackson Bennett',
         40
+    ),
+    (
+        "The Man Who Died Twice",
+        18.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9781984881014.jpg?width=384&v=v2',
+        'Mystery',
+        'Richard Osman',
+        50
+    ),
+    (
+        "How to Solve Your Own Murder",
+        28.00,
+        'This is a test!',
+        'available',
+        'https://images-us.bookshop.org/ingram/9780593474013.jpg?width=384&v=v2',
+        'Mystery',
+        'Kristen Perrin',
+        40
+    ),
+    (
+        "The Thursday Murder Club",
+        10.99,
+        'This is a test!',
+        'upcoming',
+        'https://images-us.bookshop.org/ingram/9781984880987.jpg?width=384&v=v2',
+        'Mystery',
+        'Richard Osman',
+        0
+    ),
+    (
+        "The Secret History of the Rape Kit",
+        19.00,
+        'This is a test!',
+        'out_of_stock',
+        'https://images-us.bookshop.org/ingram/9780593314715.jpg?width=384&v=v2',
+        'Mystery',
+        'Pagan Kennedy',
+        0
+    ),
+    (
+        "The Tainted Cup",
+        28.99,
+        'This is a test!',
+        'out_of_stock',
+        'https://images-us.bookshop.org/ingram/9781984820709.jpg?width=384&v=v2',
+        'Mystery',
+        'Robert Jackson Bennett',
+        0
     );
 
 -- Mock data for Cart table
@@ -459,35 +569,35 @@ VALUES (
         2,
         '123 Main St, Anytown, AT 12345',
         'delivered',
-        49.98,
+        52.48,
         'credit_card'
     ),
     (
         3,
         '456 Oak Ave, Somewhere, SW 67890',
         'in_transit',
-        24.99,
+        26.24,
         'electronic_banking'
     ),
     (
         4,
         '789 Pine Rd, Nowhere, NW 54321',
         'pending',
-        19.99,
+        20.99,
         'cash_on_delivery'
     ),
     (
         5,
         '321 Elm Dr, Everywhere, EW 13579',
         'canceled',
-        89.97,
+        94.47,
         'credit_card'
     ),
     (
         2,
         '123 Main St, Anytown, AT 12345',
         'pending',
-        24.99,
+        26.24,
         'electronic_banking'
     );
 
