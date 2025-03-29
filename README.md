@@ -30,39 +30,39 @@ Luffy's Bookstore is a full-featured e-commerce application for buying books. It
 # Database setup
 # For macOS with Homebrew
 
-brew install mysql
+- brew install mysql
 
 # Start MySQL service
 
-brew services start mysql
+- brew services start mysql
 
 # Log into MySQL
 
-mysql -u root -p
+- mysql -u root -p
 
 # Run the SQL scripts
 
-source /path/to/LuffysBookstore/backend/demo/src/main/resources/bookstore_schema.sql
-source /path/to/LuffysBookstore/backend/demo/src/main/resources/bookstore_data.sql
+- source /path/to/LuffysBookstore/backend/demo/src/main/resources/bookstore_schema.sql
+- source /path/to/LuffysBookstore/backend/demo/src/main/resources/bookstore_data.sql
 
 # Backend setup
 
-cd LuffysBookstore/backend/demo
+- cd LuffysBookstore/backend/demo
 
 # Configure application.properties
 
-spring.datasource.url=jdbc:mysql://localhost:3306/bookstore
-spring.datasource.username=root
-spring.datasource.password=yourpassword
-spring.jpa.hibernate.ddl-auto=none
+- spring.datasource.url=jdbc:mysql://localhost:3306/bookstore
+- spring.datasource.username=root
+- spring.datasource.password=yourpassword
+- spring.jpa.hibernate.ddl-auto=none
 
 # Run Spring Boot application
 # Using Maven
 
-./mvnw spring-boot:run
+- ./mvnw spring-boot:run
 
 # Frontend setup
 
-cd LuffysBookstore/frontend/bookstore
-npm install
-npm start
+- cd LuffysBookstore/frontend/bookstore
+- npm install
+- npm start
