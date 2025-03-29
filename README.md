@@ -63,3 +63,7 @@ Luffy's Bookstore is a full-featured e-commerce application for buying books. It
 - cd LuffysBookstore/frontend/bookstore
 - npm install
 - npm start
+
+# Usage
+- Ensure the backend is running (http://localhost:8080).
+- Start the frontend and visit http://localhost:3000 in your browser.
