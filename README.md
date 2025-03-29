@@ -13,33 +13,33 @@ Luffy's Bookstore is a full-featured e-commerce application for buying books. It
 - Checkout process with shipping and payment options
 
 # Tech Stack
-# Backend
+## Backend
 - Java 21
 - Spring Boot
 - Spring Data JPA
 - MySQL Database
 - RESTful API
 
-# Frontend
+## Frontend
 - React.js
 - React Router
 - CSS3 with BEM methodology
 - Responsive design
 
 # Database setup
-# For macOS with Homebrew
+## For macOS with Homebrew
 
 - brew install mysql
 
-# Start MySQL service
+## Start MySQL service
 
 - brew services start mysql
 
-# Log into MySQL
+## Log into MySQL
 
 - mysql -u root -p
 
-# Run the SQL scripts
+## Run the SQL scripts
 
 - source /path/to/LuffysBookstore/backend/demo/src/main/resources/bookstore_schema.sql
 - source /path/to/LuffysBookstore/backend/demo/src/main/resources/bookstore_data.sql
@@ -48,15 +48,15 @@ Luffy's Bookstore is a full-featured e-commerce application for buying books. It
 
 - cd LuffysBookstore/backend/demo
 
-# Configure application.properties
+## Configure application.properties
 
 - spring.datasource.url=jdbc:mysql://localhost:3306/bookstore
 - spring.datasource.username=root
-- spring.datasource.password=yourpassword
+- spring.datasource.password=**yourpassword**
 - spring.jpa.hibernate.ddl-auto=none
 
-# Run Spring Boot application
-# Using Maven
+## Run Spring Boot application
+## Using Maven
 
 - ./mvnw spring-boot:run
 
