@@ -6,6 +6,9 @@ Luffy's Bookstore - A modern, responsive e-commerce bookstore application built 
 Luffy's Bookstore is an e-commerce application for buying books. It includes book browsing, cart management, checkout flow, and order processing.
 <img alt="Luffy's Bookstore Home Page" src="/frontend/bookstore/src/assets/HomePage.png">
 
+# Demo
+📽️ **[Watch the Demo](https://drive.google.com/file/d/1BBaQdTpQwoMM44Y0qHEWBS_CXJhtNpoZ/view?usp=sharing)**  
+
 # Features
 
 - Browse and search books by title and author
