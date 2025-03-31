@@ -24,6 +24,7 @@ const useBookPresentation = (mode = "collection", searchProps = {}) => {
         error: booksError,
     } = useBooksByGenre();
 
+    // Generate rows for each genre with at least 3 books
     const genreRows = useMemo(() => {
         if (
             mode !== "collection" ||
@@ -34,7 +35,18 @@ const useBookPresentation = (mode = "collection", searchProps = {}) => {
             return null;
         }
 
-        return availableGenres.map((genre) => ({
+        const nonEmptyGenres = availableGenres.filter(
+            (genre) => booksByGenre[genre] && booksByGenre[genre].length > 3
+        );
+
+        // Sort genres by number of books
+        const sortedGenres = [...nonEmptyGenres].sort((a, b) => {
+            const aCount = booksByGenre[a]?.length || 0;
+            const bCount = booksByGenre[b]?.length || 0;
+            return bCount - aCount;
+        });
+
+        return sortedGenres.map((genre) => ({
             key: genre,
             title: genre,
             books: booksByGenre[genre] || [],
@@ -43,6 +55,7 @@ const useBookPresentation = (mode = "collection", searchProps = {}) => {
         }));
     }, [mode, availableGenres, booksByGenre, isLoadingBooks, booksError]);
 
+    // Search mode processing
     const { books, loading, error, searchQuery, totalCount } = searchProps;
 
     const content = useMemo(() => {

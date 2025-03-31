@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import * as bookService from "../services/bookService";
 
 const createBooksStore = () => {
     const store = {
         state: {
             upcoming: { data: [], loading: false, error: null, timestamp: 0 },
-            byGenre: {
-                genres: [],
+            genres: { data: [], loading: false, error: null, timestamp: 0 },
+            booksByGenre: {
                 books: {},
                 loading: false,
                 error: null,
@@ -67,6 +67,31 @@ export const useBooks = () => {
         [state]
     );
 
+    const fetchAllGenres = useCallback(
+        async (force = false) => {
+            if (!force && !isStale("genres") && state.genres.data.length > 0) {
+                return state.genres.data;
+            }
+
+            booksStore.updateState("genres", { loading: true, error: null });
+
+            try {
+                // Use the dedicated API endpoint
+                const genres = await bookService.getAllGenres();
+                booksStore.updateState("genres", { data: genres, loading: false });
+                return genres;
+            } catch (err) {
+                console.error("Error fetching genres:", err);
+                booksStore.updateState("genres", {
+                    loading: false,
+                    error: err.message,
+                });
+                return [];
+            }
+        },
+        [isStale, state.genres.data]
+    );
+
     const fetchUpcomingBooks = useCallback(
         async (force = false) => {
             if (!force && !isStale("upcoming") && state.upcoming.data.length > 0) {
@@ -93,19 +118,24 @@ export const useBooks = () => {
 
     const fetchBooksByGenre = useCallback(
         async (force = false) => {
+            // Only fetch books if we have genres and the data is stale or forced
             if (
                 !force &&
-                !isStale("byGenre") &&
-                state.byGenre.genres.length > 0 &&
-                Object.keys(state.byGenre.books).length > 0
+                !isStale("booksByGenre") &&
+                Object.keys(state.booksByGenre.books).length > 0
             ) {
                 return {
-                    genres: state.byGenre.genres,
-                    books: state.byGenre.books,
+                    genres: state.genres.data,
+                    books: state.booksByGenre.books,
                 };
             }
 
-            booksStore.updateState("byGenre", { loading: true, error: null });
+            const genres = await fetchAllGenres();
+            if (!genres.length) {
+                return { genres: [], books: {} };
+            }
+
+            booksStore.updateState("booksByGenre", { loading: true, error: null });
 
             try {
                 const [availableBooks, outOfStockBooks] = await Promise.all([
@@ -114,11 +144,8 @@ export const useBooks = () => {
                 ]);
 
                 const allBooks = [...availableBooks, ...outOfStockBooks];
-                const genres = [...new Set(allBooks.map((book) => book.genre))]
-                    .filter(Boolean)
-                    .sort();
-
                 const booksByGenreMap = {};
+
                 genres.forEach((genre) => {
                     booksByGenreMap[genre] = allBooks.filter(
                         (book) =>
@@ -128,8 +155,7 @@ export const useBooks = () => {
                     );
                 });
 
-                booksStore.updateState("byGenre", {
-                    genres,
+                booksStore.updateState("booksByGenre", {
                     books: booksByGenreMap,
                     loading: false,
                 });
@@ -137,14 +163,14 @@ export const useBooks = () => {
                 return { genres, books: booksByGenreMap };
             } catch (err) {
                 console.error("Error fetching books by genre:", err);
-                booksStore.updateState("byGenre", {
+                booksStore.updateState("booksByGenre", {
                     loading: false,
                     error: err.message,
                 });
-                return { genres: [], books: {} };
+                return { genres, books: {} };
             }
         },
-        [isStale, state.byGenre.genres, state.byGenre.books]
+        [isStale, state.booksByGenre.books, state.genres.data, fetchAllGenres]
     );
 
     const searchBooks = useCallback(async (query, page = 1, options = {}) => {
@@ -176,8 +202,8 @@ export const useBooks = () => {
                 searchOptions
             );
             booksStore.updateState("search", {
-                results: response.results || [],
-                totalCount: response.totalCount || 0,
+                content: response.content || [],
+                totalItems: response.totalItems || 0,
                 totalPages: response.totalPages || 1,
                 loading: false,
                 query,
@@ -194,28 +220,57 @@ export const useBooks = () => {
     }, []);
 
     return {
+        // Genres data
+        allGenres: state.genres.data,
+        isLoadingGenres: state.genres.loading,
+        genresError: state.genres.error,
+        fetchAllGenres,
+
+        // Upcoming books data
         upcomingBooks: state.upcoming.data,
         isLoadingUpcoming: state.upcoming.loading,
         upcomingError: state.upcoming.error,
         fetchUpcomingBooks,
 
-        availableGenres: state.byGenre.genres,
-        booksByGenre: state.byGenre.books,
-        isLoadingByGenre: state.byGenre.loading,
-        byGenreError: state.byGenre.error,
+        // Books by genre data
+        booksByGenre: state.booksByGenre.books,
+        isLoadingBooksByGenre: state.booksByGenre.loading,
+        booksByGenreError: state.booksByGenre.error,
         fetchBooksByGenre,
 
-        searchResults: state.search.results,
-        searchTotalCount: state.search.totalCount,
+        // Search data
+        searchResults: state.search.content,
+        searchTotalCount: state.search.totalItems,
         searchTotalPages: state.search.totalPages,
         isSearching: state.search.loading,
         searchError: state.search.error,
         searchBooks,
 
         refetchAll: useCallback(() => {
+            fetchAllGenres(true);
             fetchUpcomingBooks(true);
             fetchBooksByGenre(true);
-        }, [fetchUpcomingBooks, fetchBooksByGenre]),
+        }, [fetchAllGenres, fetchUpcomingBooks, fetchBooksByGenre]),
+    };
+};
+
+export const useGenres = () => {
+    const { allGenres, isLoadingGenres, genresError, fetchAllGenres } =
+        useBooks();
+
+    const initialized = useRef(false);
+    useEffect(() => {
+        if (!initialized.current) {
+            fetchAllGenres();
+            initialized.current = true;
+        }
+    }, [fetchAllGenres]);
+
+    return {
+        genres: allGenres,
+        isLoading: isLoadingGenres,
+        error: genresError,
+        refetch: fetchAllGenres,
     };
 };
 
@@ -245,10 +300,10 @@ export const useUpcomingBooks = () => {
 
 export const useBooksByGenre = () => {
     const {
-        availableGenres,
+        allGenres,
         booksByGenre,
-        isLoadingByGenre,
-        byGenreError,
+        isLoadingBooksByGenre,
+        booksByGenreError,
         fetchBooksByGenre,
     } = useBooks();
 
@@ -261,10 +316,10 @@ export const useBooksByGenre = () => {
     }, [fetchBooksByGenre]);
 
     return {
-        availableGenres,
+        availableGenres: allGenres,
         booksByGenre,
-        isLoading: isLoadingByGenre,
-        error: byGenreError,
+        isLoading: isLoadingBooksByGenre,
+        error: booksByGenreError,
         refetch: fetchBooksByGenre,
     };
 };

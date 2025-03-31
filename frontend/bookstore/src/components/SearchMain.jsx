@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SearchFilters from "./SearchFilters";
 import SearchResults from "./SearchResults";
 import Pagination from "./Pagination";
-import { useBooks, useBookSearch } from "../hooks/useBooks";
+import { useGenres, useBookSearch } from "../hooks/useBooks";
 import "../styles/SearchMain.css";
 
 const SearchMain = ({ searchQuery }) => {
@@ -10,8 +10,7 @@ const SearchMain = ({ searchQuery }) => {
     const [sortBy, setSortBy] = useState("title");
     const [filterStatus, setFilterStatus] = useState("all");
     const [selectedGenre, setSelectedGenre] = useState("");
-
-    const { availableGenres } = useBooks();
+    const { genres, isLoading: isLoadingGenres } = useGenres();
     const {
         searchResults,
         totalCount,
@@ -23,8 +22,17 @@ const SearchMain = ({ searchQuery }) => {
 
     useEffect(() => {
         if (!searchQuery) return;
+        console.log("🔍 Search query:", searchQuery);
 
         const timeoutId = setTimeout(() => {
+            console.log("🔍 Executing search with params:", {
+                query: searchQuery,
+                page: currentPage,
+                sortBy,
+                status: filterStatus,
+                genre: selectedGenre,
+            });
+
             searchBooks(searchQuery, currentPage, {
                 sortBy,
                 status: filterStatus,
@@ -71,8 +79,8 @@ const SearchMain = ({ searchQuery }) => {
                     onStatusChange={handleStatusFilterChange}
                     selectedGenre={selectedGenre}
                     onGenreChange={handleGenreFilterChange}
-                    genres={availableGenres || []}
-                    isLoading={isLoading}
+                    genres={genres || []}
+                    isLoading={isLoading || isLoadingGenres}
                     resultsCount={totalCount}
                 />
 
